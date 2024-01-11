@@ -23,21 +23,17 @@
 using JackSharp.Pointers;
 using JackSharp.Processing;
 
-namespace JackSharp.Ports
-{
-	/// <summary>
-	/// Audio out port.
-	/// </summary>
-	public sealed class AudioOutPort : Port
-	{
-		internal unsafe AudioOutPort (UnsafeStructs.jack_client_t* jackClient, int index, string nameFormat = null) : base (jackClient, index, Direction.Out, PortType.Audio,nameFormat)
-		{
-		}
+namespace JackSharp.Ports {
+    /// <summary>
+    /// Audio out port.
+    /// </summary>
+    public sealed class AudioOutPort : Port {
+        internal unsafe AudioOutPort(UnsafeStructs.jack_client_t* jackClient, int index, string nameFormat = null) : base(jackClient, index, Direction.Out, PortType.Audio, nameFormat) {
+        }
 
-		internal AudioBuffer GetAudioBuffer (uint nframes)
-		{
-			StructPointer<float> buffer = GetBuffer (nframes);
-			return new AudioBuffer (this, nframes, buffer);
-		}
-	}
+        internal AudioBuffer GetAudioBuffer(uint nframes) {
+            StructPointer<float> buffer = GetBuffer(nframes);
+            return new AudioBuffer(this, nframes, buffer);
+        }
+    }
 }

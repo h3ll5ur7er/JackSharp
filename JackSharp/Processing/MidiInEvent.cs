@@ -24,31 +24,28 @@ using JackSharp.Pointers;
 using System;
 
 
-namespace JackSharp.Processing
-{
-	/// <summary>
-	/// Midi in event. Should not be changed.
-	/// </summary>
-	public class MidiInEvent : IMidiEvent
-	{
-		/// <summary>
-		/// Gets the time.
-		/// </summary>
-		/// <value>The index of the MIDI event in the current processing frame.</value>
-		public int Time { get; private set; }
+namespace JackSharp.Processing {
+    /// <summary>
+    /// Midi in event. Should not be changed.
+    /// </summary>
+    public class MidiInEvent : IMidiEvent {
+        /// <summary>
+        /// Gets the time.
+        /// </summary>
+        /// <value>The index of the MIDI event in the current processing frame.</value>
+        public int Time { get; private set; }
 
-		/// <summary>
-		/// Gets the midi data. Please read the MIDI specifications for valid content.
-		/// </summary>
-		/// <value>The midi data.</value>
-		public byte[] MidiData { get { return _bytePointer.Array; } }
+        /// <summary>
+        /// Gets the midi data. Please read the MIDI specifications for valid content.
+        /// </summary>
+        /// <value>The midi data.</value>
+        public byte[] MidiData { get { return _bytePointer.Array; } }
 
-		readonly StructPointer<byte> _bytePointer;
+        readonly StructPointer<byte> _bytePointer;
 
-		internal unsafe MidiInEvent (UnsafeStructs.jack_midi_event_t inEvent)
-		{
-			Time = (int)inEvent.time;
-			_bytePointer = new StructPointer<byte> ((IntPtr)inEvent.buffer, inEvent.size);
-		}
-	}
+        internal unsafe MidiInEvent(UnsafeStructs.jack_midi_event_t inEvent) {
+            Time = (int)inEvent.time;
+            _bytePointer = new StructPointer<byte>((IntPtr)inEvent.buffer, inEvent.size);
+        }
+    }
 }

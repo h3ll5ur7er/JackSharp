@@ -1,8 +1,7 @@
 using System.Runtime.InteropServices;
 using JackSharp.Pointers;
 
-namespace JackSharp.ApiWrapper
-{
+namespace JackSharp.ApiWrapper {
     // static class TransportApi
     // {
     //     [DllImport(Constants.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "jack_release_timebase")]

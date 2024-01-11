@@ -27,48 +27,43 @@ using JackSharpTest.Dummies;
 using System.Threading;
 using Assert = NUnit.Framework.Legacy.ClassicAssert;
 
-namespace JackSharpTest
-{
-	[TestFixture]
-	class ServerStartTest
-	{
-		[Test]
-		public virtual void StartingServer ()
-		{
-			using (Controller controller = new Controller ("testController")) {
-				controller.Start (true);
-				Thread.Sleep (100);
-				Assert.IsTrue (controller.IsConnectedToJack);
-				controller.Stop ();
-			}			
-		}
+namespace JackSharpTest {
+    [TestFixture]
+    class ServerStartTest {
+        [Test]
+        public virtual void StartingServer() {
+            using (Controller controller = new("testController")) {
+                controller.Start(true);
+                Thread.Sleep(100);
+                Assert.IsTrue(controller.IsConnectedToJack);
+                controller.Stop();
+            }
+        }
 
-		[Test]
-		public virtual void NotStartingServer ()
-		{
-			using (Controller controller = new Controller ("testController")) {
-				controller.Start ();
-				Thread.Sleep (100);
-				Assert.IsFalse (controller.IsConnectedToJack);
-				controller.Stop ();
-			}			
-		}
+        [Test]
+        public virtual void NotStartingServer() {
+            using (Controller controller = new("testController")) {
+                controller.Start();
+                Thread.Sleep(100);
+                Assert.IsFalse(controller.IsConnectedToJack);
+                controller.Stop();
+            }
+        }
 
-		[Test]
-		public virtual void ShutdownEvent ()
-		{
-			using (Controller controller = new Controller ("testController"))
-			using (Processor client = new Processor ("TestClient", 2, 2)) {
-				ShutdownReceiver receiver = new ShutdownReceiver ();
-				controller.Start (true);
-				client.Shutdown += receiver.OnShutdown;
-				client.Start ();
-				Thread.Sleep (100);
-				controller.Stop ();
-				Thread.Sleep (100);
-				Assert.AreEqual (1, receiver.Shutdowns);
-			}			
-		}
-	}
+        [Test]
+        public virtual void ShutdownEvent() {
+            using (Controller controller = new("testController"))
+            using (Processor client = new("TestClient", 2, 2)) {
+                ShutdownReceiver receiver = new();
+                controller.Start(true);
+                client.Shutdown += receiver.OnShutdown;
+                client.Start();
+                Thread.Sleep(100);
+                controller.Stop();
+                Thread.Sleep(100);
+                Assert.AreEqual(1, receiver.Shutdowns);
+            }
+        }
+    }
 }
 

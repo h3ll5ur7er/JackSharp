@@ -1,18 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34112.27
 MinimumVisualStudioVersion = 10.0.40219.1
-#Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jack.CSCoreTest", "Jack.CSCoreTest\Jack.CSCoreTest.csproj", "{942A9172-E950-4699-8336-21549D923488}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JackSharp", "JackSharp\JackSharp.csproj", "{4F92C51C-92A4-4B82-A3D9-0F9EBF76ADA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JackSharp", "JackSharp\JackSharp.csproj", "{4F92C51C-92A4-4B82-A3D9-0F9EBF76ADA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JackSharpTest", "JackSharpTest\JackSharpTest.csproj", "{FF26D28D-D7DB-4E19-8713-4E057182DF7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JackSharpTest", "JackSharpTest\JackSharpTest.csproj", "{FF26D28D-D7DB-4E19-8713-4E057182DF7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jack.NAudio", "Jack.NAudio\Jack.NAudio.csproj", "{4EEA78CA-593E-48B1-BF6A-EED70F6DC557}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jack.NAudio", "Jack.NAudio\Jack.NAudio.csproj", "{4EEA78CA-593E-48B1-BF6A-EED70F6DC557}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jack.NAudioTest", "Jack.NAudioTest\Jack.NAudioTest.csproj", "{516BF6A5-5B69-4A24-B709-C8D817D60634}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jack.NAudioTest", "Jack.NAudioTest\Jack.NAudioTest.csproj", "{516BF6A5-5B69-4A24-B709-C8D817D60634}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioTranscription", "AudioTranscription\AudioTranscription.csproj", "{8193348F-F238-4351-BCC8-8C9E4699E938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioTranscription", "AudioTranscription\AudioTranscription.csproj", "{8193348F-F238-4351-BCC8-8C9E4699E938}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Playground", "Playground\Playground.csproj", "{FF519B44-C867-4C96-8586-7ED58AB13320}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2508B9AF-5D4C-409B-88B4-3C8AEC7DC7A0}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,18 +42,14 @@ Global
 		{516BF6A5-5B69-4A24-B709-C8D817D60634}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{516BF6A5-5B69-4A24-B709-C8D817D60634}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{516BF6A5-5B69-4A24-B709-C8D817D60634}.Release|Any CPU.Build.0 = Release|Any CPU
-		#{70F1E304-98E1-4464-BCBA-03BA6E7A3CC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		#{70F1E304-98E1-4464-BCBA-03BA6E7A3CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		#{70F1E304-98E1-4464-BCBA-03BA6E7A3CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		#{70F1E304-98E1-4464-BCBA-03BA6E7A3CC5}.Release|Any CPU.Build.0 = Release|Any CPU
-		#{942A9172-E950-4699-8336-21549D923488}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		#{942A9172-E950-4699-8336-21549D923488}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		#{942A9172-E950-4699-8336-21549D923488}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		#{942A9172-E950-4699-8336-21549D923488}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8193348F-F238-4351-BCC8-8C9E4699E938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8193348F-F238-4351-BCC8-8C9E4699E938}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8193348F-F238-4351-BCC8-8C9E4699E938}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8193348F-F238-4351-BCC8-8C9E4699E938}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF519B44-C867-4C96-8586-7ED58AB13320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF519B44-C867-4C96-8586-7ED58AB13320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF519B44-C867-4C96-8586-7ED58AB13320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF519B44-C867-4C96-8586-7ED58AB13320}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,27 +23,24 @@
 
 using System;
 
-namespace JackSharp.Events
-{
-	/// <summary>
-	/// Not available event arguments.
-	/// </summary>
-	public sealed class NotAvailableEventArgs : EventArgs
-	{
-		/// <summary>
-		/// Gets the name of the event.
-		/// </summary>
-		/// <value>The name of the event.</value>
-		public string EventName { get; private set; }
+namespace JackSharp.Events {
+    /// <summary>
+    /// Not available event arguments.
+    /// </summary>
+    public sealed class NotAvailableEventArgs : EventArgs {
+        /// <summary>
+        /// Gets the name of the event.
+        /// </summary>
+        /// <value>The name of the event.</value>
+        public string EventName { get; private set; }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="JackSharp.Events.NotAvailableEventArgs"/> class.
-		/// </summary>
-		/// <param name="eventName">Event name.</param>
-		public NotAvailableEventArgs (string eventName)
-		{
-			EventName = eventName;
-		}
-	}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JackSharp.Events.NotAvailableEventArgs"/> class.
+        /// </summary>
+        /// <param name="eventName">Event name.</param>
+        public NotAvailableEventArgs(string eventName) {
+            EventName = eventName;
+        }
+    }
 }
 

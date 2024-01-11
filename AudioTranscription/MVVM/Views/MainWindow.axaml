@@ -1,0 +1,81 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AudioTranscription.MVVM.Views.MainWindow"
+        xmlns:v="clr-namespace:AudioTranscription.MVVM.Views"
+        xmlns:vm="clr-namespace:AudioTranscription.MVVM.ViewModels"
+        x:DataType="vm:MainWindowViewModel"
+        Title="AudioTranscription">
+    <Design.DataContext>
+      <vm:DesignMainWindowViewModel/>
+    </Design.DataContext>
+
+  <!--<Grid>
+    <RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+      </RowDefinitions>
+    <Grid Grid.Row="0" Grid.Column="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <Grid Grid.Row="0" Grid.Column="0">
+        Chat
+      </Grid>
+
+      <Grid Grid.Row="0" Grid.Column="1">
+        Settings
+      </Grid>
+    </Grid>
+    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+        Status
+    </Grid>
+  </Grid>-->
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0" Grid.Column="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <Grid Grid.Row="0" Grid.Column="0">
+          <ItemsControl ItemsSource="{Binding AudioSources}">
+            <ItemsControl.DataTemplates>
+              <DataTemplate DataType="vm:MicInputViewModel">
+                <v:MicInputView DataContext="{Binding}" />
+              </DataTemplate>
+              <DataTemplate DataType="vm:FileInputViewModel">
+                <v:FileInputView DataContext="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.DataTemplates>
+          </ItemsControl>
+      </Grid>
+
+      <Grid Grid.Row="0" Grid.Column="1">
+        <ItemsControl ItemsSource="{Binding AudioOutputs}">
+          <ItemsControl.DataTemplates>
+            <DataTemplate DataType="vm:SpeakerOutputViewModel">
+              <v:SpeakerOutputView DataContext="{Binding}" />
+            </DataTemplate>
+            <DataTemplate DataType="vm:FileOutputViewModel">
+              <v:FileOutputView DataContext="{Binding}" />
+            </DataTemplate>
+          </ItemsControl.DataTemplates>
+        </ItemsControl>
+      </Grid>
+    </Grid>
+    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+      <TextBlock Text="Status"></TextBlock>
+    </Grid>
+  </Grid>
+  
+</Window>

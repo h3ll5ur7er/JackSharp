@@ -27,126 +27,115 @@ using System.Linq;
 using JackSharp.Ports;
 using JackSharp.Processing;
 
-namespace Jack.NAudio
-{
-	public sealed class AudioOut : IWavePlayer
-	{
-		readonly Processor _client;
+namespace Jack.NAudio {
+    public sealed class AudioOut : IWavePlayer {
+        readonly Processor _client;
 
-		IWaveProvider _waveStream;
+        IWaveProvider _waveStream;
 
-		PlaybackState _playbackState;
-		float _volume = 1;
+        PlaybackState _playbackState;
+        float _volume = 1;
 
-		public AudioOut (Processor client)
-		{
-			_client = client;
-			_playbackState = PlaybackState.Stopped;
-		}
+        public AudioOut(Processor client) {
+            _client = client;
+            _playbackState = PlaybackState.Stopped;
+        }
 
-		~AudioOut ()
-		{
-			Dispose (false);
-		}
+        ~AudioOut() {
+            Dispose(false);
+        }
 
-		public void Dispose ()
-		{
-			Dispose (true);
-			GC.SuppressFinalize (this);
-		}
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-		public WaveFormat OutputWaveFormat {
-			get {
-				return WaveFormat.CreateIeeeFloatWaveFormat (_client.SampleRate, _client.AudioOutPorts.Count ());
-			}
-		}
+        public WaveFormat OutputWaveFormat {
+            get {
+                return WaveFormat.CreateIeeeFloatWaveFormat(_client.SampleRate, _client.AudioOutPorts.Count());
+            }
+        }
 
-		public event EventHandler<StoppedEventArgs> PlaybackStopped;
+        public event EventHandler<StoppedEventArgs> PlaybackStopped;
 
-		public void Play ()
-		{
-			switch (_playbackState) {
-			case PlaybackState.Playing:
-				return;
-			case PlaybackState.Paused:
-				_playbackState = PlaybackState.Playing;
-				return;
-			case PlaybackState.Stopped:
-				if (_client.Start ()) {
-					_playbackState = PlaybackState.Playing;
-				}
-				break;
-			}
-		}
+        public void Play() {
+            switch (_playbackState) {
+                case PlaybackState.Playing:
+                    return;
+                case PlaybackState.Paused:
+                    _playbackState = PlaybackState.Playing;
+                    return;
+                case PlaybackState.Stopped:
+                    if (_client.Start()) {
+                        _playbackState = PlaybackState.Playing;
+                    }
+                    break;
+            }
+        }
 
-		public void Stop ()
-		{
-			if (_client.Stop ()) {
-				_playbackState = PlaybackState.Stopped;
-				if (PlaybackStopped != null) {
-					PlaybackStopped (this, new StoppedEventArgs ());
-				}
-			}
-		}
+        public void Stop() {
+            if (_client.Stop()) {
+                _playbackState = PlaybackState.Stopped;
+                if (PlaybackStopped != null) {
+                    PlaybackStopped(this, new StoppedEventArgs());
+                }
+            }
+        }
 
-		public void Pause ()
-		{
-			_playbackState = PlaybackState.Paused;
-		}
+        public void Pause() {
+            _playbackState = PlaybackState.Paused;
+        }
 
-		void ProcessAudio (ProcessBuffer processingChunk)
-		{
-			if (_playbackState != PlaybackState.Playing) {
-				return;
-			}
-			int bufferCount = processingChunk.AudioOut.Length;
-			if (bufferCount == 0) {
-				return;
-			}
-			int bufferSize = processingChunk.Frames;
-			int floatsCount = bufferCount * bufferSize;
-			int bytesCount = floatsCount * sizeof(float);
-			byte[] fromWave = new byte[bytesCount];
+        void ProcessAudio(ProcessBuffer processingChunk) {
+            if (_playbackState != PlaybackState.Playing) {
+                return;
+            }
+            int bufferCount = processingChunk.AudioOut.Length;
+            if (bufferCount == 0) {
+                return;
+            }
+            int bufferSize = processingChunk.Frames;
+            int floatsCount = bufferCount * bufferSize;
+            int bytesCount = floatsCount * sizeof(float);
+            byte[] fromWave = new byte[bytesCount];
 
-			_waveStream.Read (fromWave, 0, bytesCount);
+            _waveStream.Read(fromWave, 0, bytesCount);
 
-			float[] interlacedSamples = new float[floatsCount];
-			Buffer.BlockCopy (fromWave, 0, interlacedSamples, 0, bytesCount);
-			for (int i = 0; i < floatsCount; i++) {
-				interlacedSamples [i] = interlacedSamples [i] * _volume;
-			}
-			BufferOperations.DeinterlaceAudio (interlacedSamples, processingChunk.AudioOut, bufferSize, bufferCount);
-		}
+            float[] interlacedSamples = new float[floatsCount];
+            Buffer.BlockCopy(fromWave, 0, interlacedSamples, 0, bytesCount);
+            for (int i = 0; i < floatsCount; i++) {
+                interlacedSamples[i] = interlacedSamples[i] * _volume;
+            }
+            BufferOperations.DeinterlaceAudio(interlacedSamples, processingChunk.AudioOut, bufferSize, bufferCount);
+        }
 
-		public void Init (IWaveProvider waveProvider)
-		{
-			_waveStream = waveProvider;
+        public void Init(IWaveProvider waveProvider) {
+            _waveStream = waveProvider;
 
-			_playbackState = PlaybackState.Stopped;
-			_client.ProcessFunc += ProcessAudio;
-		}
+            _playbackState = PlaybackState.Stopped;
+            _client.ProcessFunc += ProcessAudio;
+        }
 
-		public PlaybackState PlaybackState {
-			get { return _playbackState; }
-		}
+        public PlaybackState PlaybackState {
+            get { return _playbackState; }
+        }
 
-		public float Volume {
-			get { return _volume; }
-			set {
-				if (value < 0) {
-					throw new ArgumentOutOfRangeException ("value", "Volume must be between 0.0 and 1.0");
-				}
-				if (value > 1) {
-					throw new ArgumentOutOfRangeException ("value", "Volume must be between 0.0 and 1.0");
-				}
-				_volume = value;
-			}
-		}
+        public float Volume {
+            get { return _volume; }
+            set {
+                if (value < 0) {
+                    throw new ArgumentOutOfRangeException("value", "Volume must be between 0.0 and 1.0");
+                }
+                if (value > 1) {
+                    throw new ArgumentOutOfRangeException("value", "Volume must be between 0.0 and 1.0");
+                }
+                _volume = value;
+            }
+        }
 
-		void Dispose (bool isDisposing)
-		{
-			_client.ProcessFunc -= ProcessAudio;
-			Stop ();
-		}
-	}
+        void Dispose(bool isDisposing) {
+            _client.ProcessFunc -= ProcessAudio;
+            Stop();
+        }
+    }
 }

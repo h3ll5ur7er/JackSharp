@@ -24,63 +24,61 @@ using System;
 using System.Runtime.InteropServices;
 using JackSharp.Pointers;
 
-namespace JackSharp.ApiWrapper
-{
-	static class Callbacks
-	{
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate void JackPortRegistrationCallback (uint port, int register, IntPtr args);
+namespace JackSharp.ApiWrapper {
+    static class Callbacks {
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void JackPortRegistrationCallback(uint port, int register, IntPtr args);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate void JackPortConnectCallback (uint a, uint b, int connect, IntPtr args);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void JackPortConnectCallback(uint a, uint b, int connect, IntPtr args);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate void JackShutdownCallback (IntPtr args);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void JackShutdownCallback(IntPtr args);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate int JackXRunCallback (IntPtr args);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate int JackXRunCallback(IntPtr args);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate void JackFreewheelCallback (int starting, IntPtr arg);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void JackFreewheelCallback(int starting, IntPtr arg);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate int JackBufferSizeCallback (uint nframes, IntPtr arg);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate int JackBufferSizeCallback(uint nframes, IntPtr arg);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate int JackSampleRateCallback (uint nframes, IntPtr arg);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate int JackSampleRateCallback(uint nframes, IntPtr arg);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate void JackPortRenameCallback (uint port, string old_name, string new_name, IntPtr arg);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void JackPortRenameCallback(uint port, string old_name, string new_name, IntPtr arg);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate int JackProcessCallback (uint nframes, IntPtr arg);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate int JackProcessCallback(uint nframes, IntPtr arg);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate void JackInfoShutdownCallback (JackStatus code, string reason, IntPtr arg);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void JackInfoShutdownCallback(JackStatus code, string reason, IntPtr arg);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate void JackClientRegistrationCallback (string name, int register, IntPtr arg);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void JackClientRegistrationCallback(string name, int register, IntPtr arg);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate int JackGraphOrderCallback (IntPtr arg);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate int JackGraphOrderCallback(IntPtr arg);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate void JackLatencyCallback (JackLatencyCallbackMode mode, IntPtr arg);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void JackLatencyCallback(JackLatencyCallbackMode mode, IntPtr arg);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate void JackThreadInitCallback ();
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void JackThreadInitCallback();
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate void JackThreadCallback (IntPtr arg);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void JackThreadCallback(IntPtr arg);
 
-		//[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		//public delegate int JackSyncCallback(jack_transport_state_t state, uint nframes, UnsafeStructs.JackPosition* pos, int new_pos, IntPtr arg);
+        //[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        //public delegate int JackSyncCallback(jack_transport_state_t state, uint nframes, UnsafeStructs.JackPosition* pos, int new_pos, IntPtr arg);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate void JackErrorCallback (string err);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void JackErrorCallback(string err);
 
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		public delegate void JackInfoCallback (string info);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void JackInfoCallback(string info);
 
-	}
+    }
 }

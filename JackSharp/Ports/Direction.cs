@@ -20,20 +20,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace JackSharp.Ports
-{
-	/// <summary>
-	/// Direction of data flow in ports.
-	/// </summary>
-	public enum Direction
-	{
-		/// <summary>
-		/// Port is inlet.
-		/// </summary>
-		In,
-		/// <summary>
-		/// Port is outlet.
-		/// </summary>
-		Out
-	}
+namespace JackSharp.Ports {
+    /// <summary>
+    /// Direction of data flow in ports.
+    /// </summary>
+    public enum Direction {
+        /// <summary>
+        /// Port is inlet.
+        /// </summary>
+        In,
+        /// <summary>
+        /// Port is outlet.
+        /// </summary>
+        Out
+    }
 }

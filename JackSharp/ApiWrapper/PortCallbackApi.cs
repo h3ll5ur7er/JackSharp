@@ -24,20 +24,18 @@ using System;
 using System.Runtime.InteropServices;
 using JackSharp.Pointers;
 
-namespace JackSharp.ApiWrapper
-{
-	static class PortCallbackApi
-	{
-		[DllImport (Constants.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "jack_set_client_registration_callback")]
-		public static extern unsafe int SetClientRegistrationCallback (UnsafeStructs.jack_client_t* client, Callbacks.JackClientRegistrationCallback registrationCallback, IntPtr arg);
+namespace JackSharp.ApiWrapper {
+    static class PortCallbackApi {
+        [DllImport(Constants.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "jack_set_client_registration_callback")]
+        public static extern unsafe int SetClientRegistrationCallback(UnsafeStructs.jack_client_t* client, Callbacks.JackClientRegistrationCallback registrationCallback, IntPtr arg);
 
-		[DllImport (Constants.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "jack_set_port_registration_callback")]
-		public static extern unsafe int SetPortRegistrationCallback (UnsafeStructs.jack_client_t* client, Callbacks.JackPortRegistrationCallback registrationCallback, IntPtr arg);
+        [DllImport(Constants.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "jack_set_port_registration_callback")]
+        public static extern unsafe int SetPortRegistrationCallback(UnsafeStructs.jack_client_t* client, Callbacks.JackPortRegistrationCallback registrationCallback, IntPtr arg);
 
-		[DllImport (Constants.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "jack_set_port_rename_callback")]
-		public static extern unsafe int SetPortRenameCallback (UnsafeStructs.jack_client_t* client, Callbacks.JackPortRenameCallback renameCallback, IntPtr arg);
+        [DllImport(Constants.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "jack_set_port_rename_callback")]
+        public static extern unsafe int SetPortRenameCallback(UnsafeStructs.jack_client_t* client, Callbacks.JackPortRenameCallback renameCallback, IntPtr arg);
 
-		[DllImport (Constants.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "jack_set_port_connect_callback")]
-		public static extern unsafe int SetPortConnectCallback (UnsafeStructs.jack_client_t* client, Callbacks.JackPortConnectCallback connectCallback, IntPtr arg);
-	}
+        [DllImport(Constants.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "jack_set_port_connect_callback")]
+        public static extern unsafe int SetPortConnectCallback(UnsafeStructs.jack_client_t* client, Callbacks.JackPortConnectCallback connectCallback, IntPtr arg);
+    }
 }

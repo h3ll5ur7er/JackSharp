@@ -20,18 +20,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace JackSharp.ApiWrapper
-{
-	static class Constants
-	{
-		#if Windows
-			public const string JACK_LIB_NAME = "libjack64.dll";
-		#elif Linux
+namespace JackSharp.ApiWrapper {
+    static class Constants {
+#if Windows
+        public const string JACK_LIB_NAME = "libjack64.dll";
+#elif Linux
 			public const string JACK_LIB_NAME = "libjack.so.0";
-		#elif OSX
+#elif OSX
 			public const string JACK_LIB_NAME = "libjack.0.dylib";
-		#endif
-		public const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
-		public const string JACK_DEFAULT_MIDI_TYPE = "8 bit raw midi";
-	}
+#endif
+        public const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
+        public const string JACK_DEFAULT_MIDI_TYPE = "8 bit raw midi";
+    }
 }

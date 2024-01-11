@@ -31,102 +31,92 @@ using NAudio.Wave;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Legacy.ClassicAssert;
 
-namespace Jack.NAudioTest
-{
-	[TestFixture]
-	public class AudioOutTest
-	{
-		static Processor _client;
-		static AudioOut _jackOut;
+namespace Jack.NAudioTest {
+    [TestFixture]
+    public class AudioOutTest {
+        static Processor _client;
+        static AudioOut _jackOut;
 
-		static string GetPathToWav ()
-		{
-			string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			return Path.Combine (currentDirectory, "example.wav");
-		}
+        static string GetPathToWav() {
+            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            return Path.Combine(currentDirectory, "example.wav");
+        }
 
-		[SetUp]
-		public static void CreateOutput ()
-		{
-			_client = new Processor ("testNaudioOut", 0, 2);
-			_jackOut = new AudioOut (_client);
-		}
+        [SetUp]
+        public static void CreateOutput() {
+            _client = new Processor("testNaudioOut", 0, 2);
+            _jackOut = new AudioOut(_client);
+        }
 
-		[Test]
-		public virtual void AudioFormat ()
-		{
-			_jackOut.Play ();
-			Assert.AreEqual (_jackOut.OutputWaveFormat.SampleRate, _client.SampleRate);
-			Assert.AreEqual (_jackOut.OutputWaveFormat.Channels, _client.AudioOutPorts.Count ());
-		}
+        [Test]
+        public virtual void AudioFormat() {
+            _jackOut.Play();
+            Assert.AreEqual(_jackOut.OutputWaveFormat.SampleRate, _client.SampleRate);
+            Assert.AreEqual(_jackOut.OutputWaveFormat.Channels, _client.AudioOutPorts.Count());
+        }
 
-		[Test]
-		public virtual void PlayPauseStop ()
-		{
-			_jackOut.Play ();
-			Assert.AreEqual (PlaybackState.Playing, _jackOut.PlaybackState);
-			_jackOut.Pause ();
-			Assert.AreEqual (PlaybackState.Paused, _jackOut.PlaybackState);
-			_jackOut.Play ();
-			Assert.AreEqual (PlaybackState.Playing, _jackOut.PlaybackState);
-			_jackOut.Stop ();
-			Assert.AreEqual (PlaybackState.Stopped, _jackOut.PlaybackState);
-		}
+        [Test]
+        public virtual void PlayPauseStop() {
+            _jackOut.Play();
+            Assert.AreEqual(PlaybackState.Playing, _jackOut.PlaybackState);
+            _jackOut.Pause();
+            Assert.AreEqual(PlaybackState.Paused, _jackOut.PlaybackState);
+            _jackOut.Play();
+            Assert.AreEqual(PlaybackState.Playing, _jackOut.PlaybackState);
+            _jackOut.Stop();
+            Assert.AreEqual(PlaybackState.Stopped, _jackOut.PlaybackState);
+        }
 
-		[Test]
-		public virtual void PlayAudioFile ()
-		{
-			string wavFile = GetPathToWav ();
-			WaveFileReader reader = new WaveFileReader (wavFile);
-			Wave16ToFloatProvider converter = new Wave16ToFloatProvider (reader);
-			Analyser analyser = new Analyser ();
-			_client.ProcessFunc += analyser.AnalyseOutAction;
-			_jackOut.Init (converter);
-			_jackOut.Play ();
-			Thread.Sleep (100);
-			_jackOut.Stop ();
-			reader.Close ();
-			Assert.AreNotEqual (0, analyser.NotEmptySamples);
-		}
+        [Test]
+        public virtual void PlayAudioFile() {
+            string wavFile = GetPathToWav();
+            WaveFileReader reader = new(wavFile);
+            Wave16ToFloatProvider converter = new(reader);
+            Analyser analyser = new();
+            _client.ProcessFunc += analyser.AnalyseOutAction;
+            _jackOut.Init(converter);
+            _jackOut.Play();
+            Thread.Sleep(100);
+            _jackOut.Stop();
+            reader.Close();
+            Assert.AreNotEqual(0, analyser.NotEmptySamples);
+        }
 
-		[Test]
-		public virtual void PlayAudioFilePaused ()
-		{
-			var wavFile = GetPathToWav ();
-			WaveFileReader reader = new WaveFileReader (wavFile);
-			Wave16ToFloatProvider converter = new Wave16ToFloatProvider (reader);
-			_jackOut.Init (converter);
-			_jackOut.Play ();
-			_jackOut.Pause ();
-			Thread.Sleep (100);
-			_jackOut.Stop ();
-			Assert.AreEqual (0, reader.Position);
-			reader.Close ();
-		}
+        [Test]
+        public virtual void PlayAudioFilePaused() {
+            var wavFile = GetPathToWav();
+            WaveFileReader reader = new(wavFile);
+            Wave16ToFloatProvider converter = new(reader);
+            _jackOut.Init(converter);
+            _jackOut.Play();
+            _jackOut.Pause();
+            Thread.Sleep(100);
+            _jackOut.Stop();
+            Assert.AreEqual(0, reader.Position);
+            reader.Close();
+        }
 
-		[Test]
-		public virtual void PlayAudioFileSilent ()
-		{
-			string wavFile = GetPathToWav ();
-			WaveFileReader reader = new WaveFileReader (wavFile);
-			Wave16ToFloatProvider converter = new Wave16ToFloatProvider (reader);
-			Analyser analyser = new Analyser ();
-			_client.ProcessFunc += analyser.AnalyseOutAction;
-			_jackOut.Volume = 0;
-			_jackOut.Init (converter);
-			_jackOut.Play ();
-			Thread.Sleep (100);
-			_jackOut.Stop ();
-			reader.Close ();
-			Assert.AreEqual (0, analyser.NotEmptySamples);
-		}
+        [Test]
+        public virtual void PlayAudioFileSilent() {
+            string wavFile = GetPathToWav();
+            WaveFileReader reader = new(wavFile);
+            Wave16ToFloatProvider converter = new(reader);
+            Analyser analyser = new();
+            _client.ProcessFunc += analyser.AnalyseOutAction;
+            _jackOut.Volume = 0;
+            _jackOut.Init(converter);
+            _jackOut.Play();
+            Thread.Sleep(100);
+            _jackOut.Stop();
+            reader.Close();
+            Assert.AreEqual(0, analyser.NotEmptySamples);
+        }
 
-		[TearDown]
-		public static void DestroyClient ()
-		{
-			_jackOut.Dispose ();
-			_client.Dispose ();
-		}
+        [TearDown]
+        public static void DestroyClient() {
+            _jackOut.Dispose();
+            _client.Dispose();
+        }
 
-	}
+    }
 }

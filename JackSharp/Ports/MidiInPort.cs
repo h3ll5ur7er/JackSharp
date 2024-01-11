@@ -27,29 +27,25 @@ using System.Collections.Generic;
 using System;
 using JackSharp.Processing;
 
-namespace JackSharp.Ports
-{
-	/// <summary>
-	/// MIDI in port.
-	/// </summary>
-	public sealed class MidiInPort : Port
-	{
-		internal unsafe MidiInPort (UnsafeStructs.jack_client_t* jackClient, int index, string nameFormat = null) : base (jackClient, index, Direction.In, PortType.Midi, nameFormat)
-		{
-		}
+namespace JackSharp.Ports {
+    /// <summary>
+    /// MIDI in port.
+    /// </summary>
+    public sealed class MidiInPort : Port {
+        internal unsafe MidiInPort(UnsafeStructs.jack_client_t* jackClient, int index, string nameFormat = null) : base(jackClient, index, Direction.In, PortType.Midi, nameFormat) {
+        }
 
-		internal unsafe List<MidiInEvent> GetMidiEvents (uint nframes)
-		{
-			List<MidiInEvent> midiEvents = new List<MidiInEvent> ();
+        internal unsafe List<MidiInEvent> GetMidiEvents(uint nframes) {
+            List<MidiInEvent> midiEvents = new();
 
-			IntPtr portBuffer = (IntPtr)PortApi.GetBuffer (_port, nframes);
-			uint eventCount = MidiApi.GetEventCount (portBuffer);
-			for (uint i = 0; i < eventCount; i++) {
-				UnsafeStructs.jack_midi_event_t inEvent;
-				MidiApi.GetEvent (&inEvent, portBuffer, i);
-				midiEvents.Add (new MidiInEvent (inEvent));
-			}
-			return midiEvents;
-		}
-	}
+            IntPtr portBuffer = (IntPtr)PortApi.GetBuffer(_port, nframes);
+            uint eventCount = MidiApi.GetEventCount(portBuffer);
+            for (uint i = 0; i < eventCount; i++) {
+                UnsafeStructs.jack_midi_event_t inEvent;
+                MidiApi.GetEvent(&inEvent, portBuffer, i);
+                midiEvents.Add(new MidiInEvent(inEvent));
+            }
+            return midiEvents;
+        }
+    }
 }

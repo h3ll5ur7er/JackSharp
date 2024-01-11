@@ -29,49 +29,44 @@ using NAudio.Wave;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Legacy.ClassicAssert;
 
-namespace Jack.NAudioTest
-{
-	[TestFixture]
-	public class AudioInTest
-	{
-		static Processor _client;
-		static AudioIn _jackIn;
+namespace Jack.NAudioTest {
+    [TestFixture]
+    public class AudioInTest {
+        static Processor _client;
+        static AudioIn _jackIn;
 
-		[SetUp]
-		public static void CreateInput ()
-		{
-			_client = new Processor ("testNaudioIn", 2);
-			_jackIn = new AudioIn (_client);
-		}
+        [SetUp]
+        public static void CreateInput() {
+            _client = new Processor("testNaudioIn", 2);
+            _jackIn = new AudioIn(_client);
+        }
 
-		[Test]
-		public virtual void RecordAudioFile ()
-		{
-			string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			string wavFile = Path.Combine (currentDirectory, "recording.wav");
-			long writtenSamples = 0;
-			WaveFileWriter writer = new WaveFileWriter (wavFile, _jackIn.WaveFormat);
-			_jackIn.DataAvailable += (sender, args) => {
-				writer.Write (args.Buffer, 0, args.BytesRecorded);
-			};
-			_jackIn.RecordingStopped += (sender, e) => {
-				writer.Flush ();
-				writer.Dispose ();
-				long fileSize = new FileInfo (wavFile).Length;
-				Assert.AreNotEqual (0, fileSize);
-			};
-			_jackIn.StartRecording ();
-			Thread.Sleep (100);
-			_jackIn.StopRecording ();
-			writtenSamples = writer.Length;
-			Assert.AreNotEqual (0, writtenSamples);
-		}
+        [Test]
+        public virtual void RecordAudioFile() {
+            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string wavFile = Path.Combine(currentDirectory, "recording.wav");
+            long writtenSamples = 0;
+            WaveFileWriter writer = new(wavFile, _jackIn.WaveFormat);
+            _jackIn.DataAvailable += (sender, args) => {
+                writer.Write(args.Buffer, 0, args.BytesRecorded);
+            };
+            _jackIn.RecordingStopped += (sender, e) => {
+                writer.Flush();
+                writer.Dispose();
+                long fileSize = new FileInfo(wavFile).Length;
+                Assert.AreNotEqual(0, fileSize);
+            };
+            _jackIn.StartRecording();
+            Thread.Sleep(100);
+            _jackIn.StopRecording();
+            writtenSamples = writer.Length;
+            Assert.AreNotEqual(0, writtenSamples);
+        }
 
-		[TearDown]
-		public static void DestroyClient ()
-		{
-			_jackIn.Dispose ();
-			_client.Dispose ();
-		}
-	}
+        [TearDown]
+        public static void DestroyClient() {
+            _jackIn.Dispose();
+            _client.Dispose();
+        }
+    }
 }

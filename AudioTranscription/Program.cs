@@ -1,46 +1,51 @@
-﻿using Jack.NAudio;
+﻿using Avalonia;
+using Avalonia.ReactiveUI;
+using System;
+using System.Collections.Generic;
+
 using JackSharp;
-using NAudio;
-using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
+using AudioTranscription.BusinessLogic;
 
-System.Console.WriteLine("Recording");
+namespace AudioTranscription;
 
-using var clientIn = new Processor("AudioTranscription", 2, 0, 0, 0, true);
-using var clientOut = new Processor("AudioTranscription", 0, 2, 0, 0, true);
-using var audioIn = new AudioIn(clientIn);
-using var audioOut = new AudioOut(clientOut);
+class Program {
+     [STAThread] public static void Main(string[] args) => BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
 
-var waveOutFile = new WaveFileWriter("test.wav", WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
+            //.WithPlayground()
+            .LoadConfig()
+            .UsePlatformDetect()
+            .WithInterFont()
+            .UseReactiveUI()
+            .LogToTrace();
+}
 
-audioIn.DataAvailable += (s,e) => {
-    waveOutFile.Write(e.Buffer, 0, e.BytesRecorded);
-};
-audioIn.RecordingStopped += (s,e) => {
-    Console.WriteLine("Recording Stopped");
-    waveOutFile.Flush();
-    waveOutFile.Dispose();
-};
-audioIn.StartRecording();
-System.Console.WriteLine("Press any key to stop recording");
-Console.ReadKey();
-audioIn.StopRecording();
+public static class AppBuilderExtensions {
+    public static AppBuilder LoadConfig(this AppBuilder builder) {
+        Configuration.Load("config.json");
+        return builder;
+    }
+    public static AppBuilder WithPlayground(this AppBuilder builder) {
 
-///////////////////////////////////////////////
-System.Console.WriteLine("Press any key to start playback");
-Console.ReadKey();
+        using var clientIn = new Processor("AudioTranscription", 2, 2, 0, 0, false);
+        clientIn.Start();
+        (var sI, var sO) = clientIn.GetSystemAudioPorts();
+        (var aI, var aO) = clientIn.GetAppAudioPorts();
+        foreach (var port in sI) {
+            Console.WriteLine($"SystemInput: {port}");
+        }
+        foreach (var port in sO) {
+            Console.WriteLine($"SystemOutput: {port}");
+        }
+        foreach (var port in aI) {
+            Console.WriteLine($"AppInput: {port}");
+        }
+        foreach (var port in aO) {
+            Console.WriteLine($"AppOutput: {port}");
+        }
 
-System.Console.WriteLine("Playback");
-
-var wavInFile = new AudioFileReader("example.wav");
-System.Console.WriteLine($"Sample Rate: {wavInFile.WaveFormat.SampleRate}");
-System.Console.WriteLine($"Channels: {wavInFile.WaveFormat.Channels}");
-System.Console.WriteLine($"Bits per Sample: {wavInFile.WaveFormat.BitsPerSample}");
-System.Console.WriteLine($"Encoding: {wavInFile.WaveFormat.Encoding}");
-audioOut.Init(wavInFile);
-audioOut.Play();
-System.Console.WriteLine("Press any key to stop playback");
-Console.ReadKey();
-audioOut.Stop();
-
-
+        return builder;
+    }
+    
+}

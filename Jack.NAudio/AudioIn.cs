@@ -27,87 +27,78 @@ using JackSharp.Ports;
 using JackSharp.Processing;
 using NAudio.Wave;
 
-namespace Jack.NAudio
-{
-	public sealed class AudioIn : IWaveIn
-	{
-		readonly Processor _client;
-		bool _isRecording;
+namespace Jack.NAudio {
+    public sealed class AudioIn : IWaveIn {
+        readonly Processor _client;
+        bool _isRecording;
 
-		public AudioIn (Processor client)
-		{
-			_client = client;
-			_client.ProcessFunc += ProcessAudio;
-		}
+        public AudioIn(Processor client) {
+            _client = client;
+            _client.ProcessFunc += ProcessAudio;
+        }
 
-		~AudioIn ()
-		{
-			Dispose (false);
-		}
+        ~AudioIn() {
+            Dispose(false);
+        }
 
-		public void Dispose ()
-		{
-			Dispose (true);
-			GC.SuppressFinalize (this);
-		}
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-		void Dispose (bool isDisposing)
-		{
-			_client.ProcessFunc -= ProcessAudio;
-			StopRecording ();
-		}
+        void Dispose(bool isDisposing) {
+            _client.ProcessFunc -= ProcessAudio;
+            StopRecording();
+        }
 
-		void ProcessAudio (ProcessBuffer processingChunk)
-		{
-			int bufferCount = processingChunk.AudioIn.Length;
-			if (bufferCount == 0) {
-				return;
-			}
-			int bufferSize = processingChunk.AudioIn [0].BufferSize;
-			int floatsCount = bufferCount * bufferSize;
-			int bytesCount = floatsCount * sizeof(float);
-			float[] interlacedSamples = BufferOperations.InterlaceAudio (processingChunk.AudioIn, bufferSize, bufferCount);
-			byte[] waveInData = new byte[bytesCount];
-			Buffer.BlockCopy (interlacedSamples, 0, waveInData, 0, bytesCount);
-			if (DataAvailable != null) {
-				DataAvailable (this, new WaveInEventArgs (waveInData, bytesCount));
-			}
+        void ProcessAudio(ProcessBuffer processingChunk) {
+            int bufferCount = processingChunk.AudioIn.Length;
+            if (bufferCount == 0) {
+                return;
+            }
+            int bufferSize = processingChunk.AudioIn[0].BufferSize;
+            int floatsCount = bufferCount * bufferSize;
+            int bytesCount = floatsCount * sizeof(float);
+            float[] interlacedSamples = BufferOperations.InterlaceAudio(processingChunk.AudioIn, bufferSize, bufferCount);
+            byte[] waveInData = new byte[bytesCount];
+            Buffer.BlockCopy(interlacedSamples, 0, waveInData, 0, bytesCount);
+            if (DataAvailable != null) {
+                DataAvailable(this, new WaveInEventArgs(waveInData, bytesCount));
+            }
 
-		}
+        }
 
-		public void StartRecording ()
-		{
-			if (_isRecording) {
-				return;
-			}
-			if (_client.Start ()) {
-				_isRecording = true;
-			}
-		}
+        public void StartRecording() {
+            if (_isRecording) {
+                return;
+            }
+            if (_client.Start()) {
+                _isRecording = true;
+            }
+        }
 
-		public void StopRecording ()
-		{
-			if (!_isRecording) {
-				return;
-			}
-			if (_client.Stop ()) {
-				_isRecording = false;
-				if (RecordingStopped != null) {
-					RecordingStopped (this, new StoppedEventArgs ());
-				}
-			}
-		}
+        public void StopRecording() {
+            if (!_isRecording) {
+                return;
+            }
+            if (_client.Stop()) {
+                _isRecording = false;
+                if (RecordingStopped != null) {
+                    RecordingStopped(this, new StoppedEventArgs());
+                }
+            }
+        }
 
-		public WaveFormat WaveFormat {
-			get {
-				return WaveFormat.CreateIeeeFloatWaveFormat (_client.SampleRate, _client.AudioInPorts.Count ());
-			}
-			set {
-				throw new NotImplementedException ();
-			}
-		}
+        public WaveFormat WaveFormat {
+            get {
+                return WaveFormat.CreateIeeeFloatWaveFormat(_client.SampleRate, _client.AudioInPorts.Count());
+            }
+            set {
+                throw new NotImplementedException();
+            }
+        }
 
-		public event EventHandler<WaveInEventArgs> DataAvailable;
-		public event EventHandler<StoppedEventArgs> RecordingStopped;
-	}
+        public event EventHandler<WaveInEventArgs> DataAvailable;
+        public event EventHandler<StoppedEventArgs> RecordingStopped;
+    }
 }

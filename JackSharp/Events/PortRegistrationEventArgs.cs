@@ -23,34 +23,31 @@
 using System;
 using JackSharp.Ports;
 
-namespace JackSharp.Events
-{
-	/// <summary>
-	/// Port registration event arguments.
-	/// </summary>
-	public sealed class PortRegistrationEventArgs : EventArgs
-	{
-		/// <summary>
-		/// Gets the port.
-		/// </summary>
-		/// <value>The port.</value>
-		public PortReference Port { get; private set; }
+namespace JackSharp.Events {
+    /// <summary>
+    /// Port registration event arguments.
+    /// </summary>
+    public sealed class PortRegistrationEventArgs : EventArgs {
+        /// <summary>
+        /// Gets the port.
+        /// </summary>
+        /// <value>The port.</value>
+        public PortReference Port { get; private set; }
 
-		/// <summary>
-		/// Gets the type of the change.
-		/// </summary>
-		/// <value>The type of the change.</value>
-		public ChangeType ChangeType { get; private set; }
+        /// <summary>
+        /// Gets the type of the change.
+        /// </summary>
+        /// <value>The type of the change.</value>
+        public ChangeType ChangeType { get; private set; }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="JackSharp.Events.PortRegistrationEventArgs"/> class.
-		/// </summary>
-		/// <param name="port">Port.</param>
-		/// <param name="changeType">Change type.</param>
-		public PortRegistrationEventArgs (PortReference port, ChangeType changeType)
-		{
-			Port = port;
-			ChangeType = changeType;
-		}
-	}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JackSharp.Events.PortRegistrationEventArgs"/> class.
+        /// </summary>
+        /// <param name="port">Port.</param>
+        /// <param name="changeType">Change type.</param>
+        public PortRegistrationEventArgs(PortReference port, ChangeType changeType) {
+            Port = port;
+            ChangeType = changeType;
+        }
+    }
 }

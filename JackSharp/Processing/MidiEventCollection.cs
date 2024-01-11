@@ -25,51 +25,45 @@ using System.Collections;
 using System.Collections.Generic;
 using JackSharp.Ports;
 
-namespace JackSharp.Processing
-{
-	/// <summary>
-	/// Midi event collection.
-	/// </summary>
-	public class MidiEventCollection<T> : IEnumerable<T>, IProcessingItem where T: IMidiEvent
-	{
-		/// <summary>
-		/// Gets the port.
-		/// </summary>
-		/// <value>The port.</value>
-		public Port Port { get; private set; }
+namespace JackSharp.Processing {
+    /// <summary>
+    /// Midi event collection.
+    /// </summary>
+    public class MidiEventCollection<T> : IEnumerable<T>, IProcessingItem where T : IMidiEvent {
+        /// <summary>
+        /// Gets the port.
+        /// </summary>
+        /// <value>The port.</value>
+        public Port Port { get; private set; }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="JackSharp.Processing.MidiEventCollection`1"/> class.
-		/// </summary>
-		/// <param name="port">Port.</param>
-		internal MidiEventCollection (Port port)
-		{
-			Port = port;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JackSharp.Processing.MidiEventCollection`1"/> class.
+        /// </summary>
+        /// <param name="port">Port.</param>
+        internal MidiEventCollection(Port port) {
+            Port = port;
+        }
 
-		/// <summary>
-		/// Adds a MIDI event.
-		/// </summary>
-		/// <param name="midiEvent">Midi event.</param>
-		public void AddEvent (T midiEvent)
-		{
-			_midiEvents.Add (midiEvent);
-		}
+        /// <summary>
+        /// Adds a MIDI event.
+        /// </summary>
+        /// <param name="midiEvent">Midi event.</param>
+        public void AddEvent(T midiEvent) {
+            _midiEvents.Add(midiEvent);
+        }
 
-		readonly List<T> _midiEvents = new List<T> ();
+        readonly List<T> _midiEvents = new();
 
-		/// <summary>
-		/// Gets the enumerator.
-		/// </summary>
-		/// <returns>The enumerator.</returns>
-		public IEnumerator<T> GetEnumerator ()
-		{
-			return _midiEvents.GetEnumerator ();
-		}
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
+        public IEnumerator<T> GetEnumerator() {
+            return _midiEvents.GetEnumerator();
+        }
 
-		IEnumerator IEnumerable.GetEnumerator ()
-		{
-			return GetEnumerator ();
-		}
-	}
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
+        }
+    }
 }

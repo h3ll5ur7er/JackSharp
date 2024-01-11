@@ -28,197 +28,179 @@ using JackSharp.Events;
 using JackSharp.Pointers;
 using JackSharp.Ports;
 
-namespace JackSharp
-{
-	/// <summary>
-	/// Controller.
-	/// </summary>
-	public sealed class Controller : Client
-	{
-		Callbacks.JackClientRegistrationCallback _clientRegistration;
+namespace JackSharp {
+    /// <summary>
+    /// Controller.
+    /// </summary>
+    public sealed class Controller : Client {
+        Callbacks.JackClientRegistrationCallback _clientRegistration;
 
-		/// <summary>
-		/// Occurs when a client has changed.
-		/// </summary>
-		public event EventHandler<ClientRegistrationEventArgs> ClientChanged;
+        /// <summary>
+        /// Occurs when a client has changed.
+        /// </summary>
+        public event EventHandler<ClientRegistrationEventArgs> ClientChanged;
 
-		Callbacks.JackPortRegistrationCallback _portRegistration;
+        Callbacks.JackPortRegistrationCallback _portRegistration;
 
-		/// <summary>
-		/// Occurs when a port has changed.
-		/// </summary>
-		public event EventHandler<PortRegistrationEventArgs> PortChanged;
+        /// <summary>
+        /// Occurs when a port has changed.
+        /// </summary>
+        public event EventHandler<PortRegistrationEventArgs> PortChanged;
 
-		Callbacks.JackPortRenameCallback _portRename;
-		Callbacks.JackPortConnectCallback _portConnect;
+        Callbacks.JackPortRenameCallback _portRename;
+        Callbacks.JackPortConnectCallback _portConnect;
 
-		/// <summary>
-		/// Occurs when a connection has changed.
-		/// </summary>
-		public event EventHandler<ConnectionChangeEventArgs> ConnectionChanged;
+        /// <summary>
+        /// Occurs when a connection has changed.
+        /// </summary>
+        public event EventHandler<ConnectionChangeEventArgs> ConnectionChanged;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="JackSharp.Controller"/> class.
-		/// </summary>
-		/// <param name="name">Name.</param>
-		public Controller (string name) : base (name)
-		{
-			SetUpCallbacks ();
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JackSharp.Controller"/> class.
+        /// </summary>
+        /// <param name="name">Name.</param>
+        public Controller(string name) : base(name) {
+            SetUpCallbacks();
+        }
 
-		void SetUpCallbacks ()
-		{
-			_clientRegistration = OnClientRegistration;
-			_portRegistration = OnPortRegistration;
-			_portRename = OnPortRename;
-			_portConnect = OnPortConnect;
-		}
+        void SetUpCallbacks() {
+            _clientRegistration = OnClientRegistration;
+            _portRegistration = OnPortRegistration;
+            _portRename = OnPortRename;
+            _portConnect = OnPortConnect;
+        }
 
-		void OnClientRegistration (string name, int register, IntPtr arg)
-		{
-			if (ClientChanged != null) {
-				ClientChanged (this, new ClientRegistrationEventArgs (name, register > 0 ? ChangeType.New : ChangeType.Deleted));
-			}
-		}
+        void OnClientRegistration(string name, int register, IntPtr arg) {
+            if (ClientChanged != null) {
+                ClientChanged(this, new ClientRegistrationEventArgs(name, register > 0 ? ChangeType.New : ChangeType.Deleted));
+            }
+        }
 
-		void OnPortRegistration (uint portId, int register, IntPtr args)
-		{
-			if (PortChanged != null) {
-				PortReference port = MapPort (portId);
-				PortChanged (this,
-					new PortRegistrationEventArgs (port, register > 0 ? ChangeType.New : ChangeType.Deleted));
-			}
-		}
+        void OnPortRegistration(uint portId, int register, IntPtr args) {
+            if (PortChanged != null) {
+                PortReference port = MapPort(portId);
+                PortChanged(this,
+                    new PortRegistrationEventArgs(port, register > 0 ? ChangeType.New : ChangeType.Deleted));
+            }
+        }
 
-		unsafe PortReference MapPort (uint portId)
-		{
-			UnsafeStructs.jack_port_t* portPointer = PortApi.GetPortById (JackClient, portId);
-			if (portPointer == null) {
-				return null;
-			}
-			return new PortReference (portPointer);
-		}
+        unsafe PortReference MapPort(uint portId) {
+            UnsafeStructs.jack_port_t* portPointer = PortApi.GetPortById(JackClient, portId);
+            if (portPointer == null) {
+                return null;
+            }
+            return new PortReference(portPointer);
+        }
 
-		void OnPortRename (uint portId, string oldName, string newName, IntPtr arg)
-		{
-			if (PortChanged != null) {
-				PortReference port = MapPort (portId);
-				port.FullName = newName;
-				PortChanged (this, new PortRegistrationEventArgs (port, ChangeType.Renamed));
-			}
-		}
+        void OnPortRename(uint portId, string oldName, string newName, IntPtr arg) {
+            if (PortChanged != null) {
+                PortReference port = MapPort(portId);
+                port.FullName = newName;
+                PortChanged(this, new PortRegistrationEventArgs(port, ChangeType.Renamed));
+            }
+        }
 
-		void OnPortConnect (uint a, uint b, int connect, IntPtr args)
-		{
-			if (ConnectionChanged != null) {
-				PortReference outlet = MapPort (a);
-				PortReference inlet = MapPort (b);
-				ConnectionChanged (this,
-					new ConnectionChangeEventArgs (outlet, inlet, connect > 0 ? ChangeType.New : ChangeType.Deleted));
-			}
-		}
+        void OnPortConnect(uint a, uint b, int connect, IntPtr args) {
+            if (ConnectionChanged != null) {
+                PortReference outlet = MapPort(a);
+                PortReference inlet = MapPort(b);
+                ConnectionChanged(this,
+                    new ConnectionChangeEventArgs(outlet, inlet, connect > 0 ? ChangeType.New : ChangeType.Deleted));
+            }
+        }
 
-		internal override bool Open (bool startServer)
-		{
-			ClientStatus status = BaseOpen (startServer);
-			switch (status) {
-			case ClientStatus.AlreadyThere:
-				return true;
-			case ClientStatus.Failure:
-				return false;
-			case ClientStatus.New:
-				WireUpCallbacks ();
-				WireUpBaseCallbacks ();
-				SendPortsAndConnections ();
-				return true;
-			}
-			return false;
-		}
+        internal override bool Open(bool startServer) {
+            ClientStatus status = BaseOpen(startServer);
+            switch (status) {
+                case ClientStatus.AlreadyThere:
+                    return true;
+                case ClientStatus.Failure:
+                    return false;
+                case ClientStatus.New:
+                    WireUpCallbacks();
+                    WireUpBaseCallbacks();
+                    SendPortsAndConnections();
+                    return true;
+            }
+            return false;
+        }
 
-		void SendPortsAndConnections ()
-		{
-			var allPorts = GetAndSendPorts ();
-			GetAndSendConnections (allPorts);
-		}
+        void SendPortsAndConnections() {
+            var allPorts = GetAndSendPorts();
+            GetAndSendConnections(allPorts);
+        }
 
-		unsafe void GetAndSendConnections (List<PortReference> allPorts)
-		{
-			// In ports are connected to out ports, so we only need to map these.
-			foreach (PortReference port in allPorts.Where(p => p.Direction == Direction.Out)) {
-				IntPtr connectedPortNames = PortApi.GetConnections (port.PortPointer);
-				List<PortReference> connectedPorts = PortListFromPointer (connectedPortNames);
+        unsafe void GetAndSendConnections(List<PortReference> allPorts) {
+            // In ports are connected to out ports, so we only need to map these.
+            foreach (PortReference port in allPorts.Where(p => p.Direction == Direction.Out)) {
+                IntPtr connectedPortNames = PortApi.GetConnections(port.PortPointer);
+                List<PortReference> connectedPorts = PortListFromPointer(connectedPortNames);
 
-				if (ConnectionChanged != null) {
-					foreach (PortReference connected in connectedPorts) {
-						ConnectionChanged (this, new ConnectionChangeEventArgs (port, connected, ChangeType.New));
-					}
-				}
-				Invoke.Free (connectedPortNames);
-			}
-		}
+                if (ConnectionChanged != null) {
+                    foreach (PortReference connected in connectedPorts) {
+                        ConnectionChanged(this, new ConnectionChangeEventArgs(port, connected, ChangeType.New));
+                    }
+                }
+                Invoke.Free(connectedPortNames);
+            }
+        }
 
-		List<PortReference> GetAndSendPorts ()
-		{
-			List<PortReference> ports = GetAllJackPorts ();
-			if (PortChanged != null) {
-				foreach (PortReference port in ports) {
-					PortChanged (this, new PortRegistrationEventArgs (port, ChangeType.New));
-				}
-			}
-			return ports;
-		}
+        List<PortReference> GetAndSendPorts() {
+            List<PortReference> ports = GetAllJackPorts();
+            if (PortChanged != null) {
+                foreach (PortReference port in ports) {
+                    PortChanged(this, new PortRegistrationEventArgs(port, ChangeType.New));
+                }
+            }
+            return ports;
+        }
 
-		unsafe void WireUpCallbacks ()
-		{
-			PortCallbackApi.SetClientRegistrationCallback (JackClient, _clientRegistration, IntPtr.Zero);
-			PortCallbackApi.SetPortRegistrationCallback (JackClient, _portRegistration, IntPtr.Zero);
-			try {
-				PortCallbackApi.SetPortRenameCallback (JackClient, _portRename, IntPtr.Zero);
-			} catch (EntryPointNotFoundException) {
-				InvokeNotAvaible ("Port Rename");
-			}
-			PortCallbackApi.SetPortConnectCallback (JackClient, _portConnect, IntPtr.Zero);
-		}
+        unsafe void WireUpCallbacks() {
+            PortCallbackApi.SetClientRegistrationCallback(JackClient, _clientRegistration, IntPtr.Zero);
+            PortCallbackApi.SetPortRegistrationCallback(JackClient, _portRegistration, IntPtr.Zero);
+            try {
+                PortCallbackApi.SetPortRenameCallback(JackClient, _portRename, IntPtr.Zero);
+            } catch (EntryPointNotFoundException) {
+                InvokeNotAvaible("Port Rename");
+            }
+            PortCallbackApi.SetPortConnectCallback(JackClient, _portConnect, IntPtr.Zero);
+        }
 
-		/// <summary>
-		/// Activates the client and connects to Jack.
-		/// </summary>
-		/// <param name="startServer">If [true], the client will start Jack if it is not running.</param>
-		public new bool Start (bool startServer = false)
-		{
-			return base.Start (startServer);
-		}
+        /// <summary>
+        /// Activates the client and connects to Jack.
+        /// </summary>
+        /// <param name="startServer">If [true], the client will start Jack if it is not running.</param>
+        public new bool Start(bool startServer = false) {
+            return base.Start(startServer);
+        }
 
-		/// <summary>
-		/// Stops the client and disconnects from Jack.
-		/// </summary>
-		public new bool Stop ()
-		{
-			return base.Stop ();
-		}
+        /// <summary>
+        /// Stops the client and disconnects from Jack.
+        /// </summary>
+        public new bool Stop() {
+            return base.Stop();
+        }
 
-		/// <summary>
-		/// Connect the specified outPort and inPort.
-		/// </summary>
-		/// <param name="outPort">Out port.</param>
-		/// <param name="inPort">In port.</param>
-		public bool Connect (PortReference outPort, PortReference inPort)
-		{
-			unsafe {
-				return PortApi.Connect (JackClient, outPort.FullName, inPort.FullName) == 0;
-			}
-		}
+        /// <summary>
+        /// Connect the specified outPort and inPort.
+        /// </summary>
+        /// <param name="outPort">Out port.</param>
+        /// <param name="inPort">In port.</param>
+        public bool Connect(PortReference outPort, PortReference inPort) {
+            unsafe {
+                return PortApi.Connect(JackClient, outPort.FullName, inPort.FullName) == 0;
+            }
+        }
 
-		/// <summary>
-		/// Disconnect the specified outPort and inPort.
-		/// </summary>
-		/// <param name="outPort">Out port.</param>
-		/// <param name="inPort">In port.</param>
-		public bool Disconnect (PortReference outPort, PortReference inPort)
-		{
-			unsafe {
-				return PortApi.Disconnect (JackClient, outPort.FullName, inPort.FullName) == 0;
-			}
-		}
-	}
+        /// <summary>
+        /// Disconnect the specified outPort and inPort.
+        /// </summary>
+        /// <param name="outPort">Out port.</param>
+        /// <param name="inPort">In port.</param>
+        public bool Disconnect(PortReference outPort, PortReference inPort) {
+            unsafe {
+                return PortApi.Disconnect(JackClient, outPort.FullName, inPort.FullName) == 0;
+            }
+        }
+    }
 }

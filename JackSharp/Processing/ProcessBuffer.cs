@@ -21,46 +21,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace JackSharp.Processing
-{
-	/// <summary>
-	/// Buffer containing audio and MIDI data in arrays.
-	/// </summary>
-	public class ProcessBuffer
-	{
-		/// <summary>
-		/// Audio in buffers. Should not be changed.
-		/// </summary>
-		public AudioBuffer[] AudioIn { get; set; }
+namespace JackSharp.Processing {
+    /// <summary>
+    /// Buffer containing audio and MIDI data in arrays.
+    /// </summary>
+    public class ProcessBuffer {
+        /// <summary>
+        /// Audio in buffers. Should not be changed.
+        /// </summary>
+        public AudioBuffer[] AudioIn { get; set; }
 
-		/// <summary>
-		/// Audio out buffers.
-		/// </summary>
-		public AudioBuffer[] AudioOut { get; set; }
+        /// <summary>
+        /// Audio out buffers.
+        /// </summary>
+        public AudioBuffer[] AudioOut { get; set; }
 
-		/// <summary>
-		/// MIDI in buffers. Should not be changed.
-		/// </summary>
-		public MidiEventCollection<MidiInEvent>[] MidiIn { get; set; }
+        /// <summary>
+        /// MIDI in buffers. Should not be changed.
+        /// </summary>
+        public MidiEventCollection<MidiInEvent>[] MidiIn { get; set; }
 
-		/// <summary>
-		/// Midi out buffers.
-		/// </summary>
-		public MidiEventCollection<MidiOutEvent>[] MidiOut { get; set; }
+        /// <summary>
+        /// Midi out buffers.
+        /// </summary>
+        public MidiEventCollection<MidiOutEvent>[] MidiOut { get; set; }
 
-		/// <summary>
-		/// Number of frames for this buffer.
-		/// </summary>
-		public int Frames { get; private set; }
+        /// <summary>
+        /// Number of frames for this buffer.
+        /// </summary>
+        public int Frames { get; private set; }
 
-		internal ProcessBuffer (uint nframes, AudioBuffer[] audioInBuffers, AudioBuffer[] audioOutBuffers, MidiEventCollection<MidiInEvent>[] midiInEvents, MidiEventCollection<MidiOutEvent>[] midiOutEvents)
-		{
-			Frames = (int)nframes;
-			AudioIn = audioInBuffers;
-			AudioOut = audioOutBuffers;
-			MidiIn = midiInEvents;
-			MidiOut = midiOutEvents;
-		}
+        internal ProcessBuffer(uint nframes, AudioBuffer[] audioInBuffers, AudioBuffer[] audioOutBuffers, MidiEventCollection<MidiInEvent>[] midiInEvents, MidiEventCollection<MidiOutEvent>[] midiOutEvents) {
+            Frames = (int)nframes;
+            AudioIn = audioInBuffers;
+            AudioOut = audioOutBuffers;
+            MidiIn = midiInEvents;
+            MidiOut = midiOutEvents;
+        }
 
-	}
+    }
 }

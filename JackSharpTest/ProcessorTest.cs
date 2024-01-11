@@ -27,124 +27,112 @@ using JackSharpTest.Dummies;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Legacy.ClassicAssert;
 
-namespace JackSharpTest
-{
-	[TestFixture]
-	public class ProcessorTest
-	{
-		[Test]
-		public virtual void Start ()
-		{
-			using (Processor client = new Processor ("testClient")) {
-				Assert.IsTrue (client.Start ());
-				client.Stop ();
-			}
-		}
+namespace JackSharpTest {
+    [TestFixture]
+    public class ProcessorTest {
+        [Test]
+        public virtual void Start() {
+            using (Processor client = new("testClient")) {
+                Assert.IsTrue(client.Start());
+                client.Stop();
+            }
+        }
 
-		[Test]
-		public virtual void DoubleStart ()
-		{
-			using (Processor client = new Processor ("testing")) {
-				Assert.IsTrue (client.Start ());
-				Assert.IsFalse (client.Start ());
-			}
-		}
+        [Test]
+        public virtual void DoubleStart() {
+            using (Processor client = new("testing")) {
+                Assert.IsTrue(client.Start());
+                Assert.IsFalse(client.Start());
+            }
+        }
 
-		[Test]
-		public virtual void StartAfterStopped ()
-		{
-			using (Processor client = new Processor ("testing", 1)) {
-				ClientReceiver receiver = new ClientReceiver ();
-				client.ProcessFunc += receiver.ChannelCounterAction;
-				Assert.IsTrue (client.Start ());
-				client.Stop ();
-				Assert.IsTrue (client.Start ());
-				Assert.AreEqual (1, client.AudioInPorts.Count ());
-				Thread.Sleep (100);
-				Assert.AreEqual (1, receiver.Called);
-			}
-		}
+        [Test]
+        public virtual void StartAfterStopped() {
+            using (Processor client = new("testing", 1)) {
+                ClientReceiver receiver = new();
+                client.ProcessFunc += receiver.ChannelCounterAction;
+                Assert.IsTrue(client.Start());
+                client.Stop();
+                Assert.IsTrue(client.Start());
+                Assert.AreEqual(1, client.AudioInPorts.Count());
+                Thread.Sleep(100);
+                Assert.AreEqual(1, receiver.Called);
+            }
+        }
 
-		[Test]
-		public virtual void Stop ()
-		{
-			using (Processor client = new Processor ("testing")) {
-				client.Start ();
-				Assert.IsTrue (client.Stop ());
-			}
-		}
+        [Test]
+        public virtual void Stop() {
+            using (Processor client = new("testing")) {
+                client.Start();
+                Assert.IsTrue(client.Stop());
+            }
+        }
 
-		[Test]
-		public virtual void StopIfNotStarted ()
-		{
-			using (Processor client = new Processor ("testing")) {
-				Assert.IsFalse (client.Stop ());
-			}
-		}
+        [Test]
+        public virtual void StopIfNotStarted() {
+            using (Processor client = new("testing")) {
+                Assert.IsFalse(client.Stop());
+            }
+        }
 
-		[Test]
-		public virtual void SampleRate ()
-		{
-			using (Processor client = new Processor ("testing")) {
-				client.Start ();
-				Assert.IsTrue (client.SampleRate == 44100 || client.SampleRate == 48000);
-				client.Stop ();
-			}
-		}
+        [Test]
+        public virtual void SampleRate() {
+            using (Processor client = new("testing")) {
+                client.Start();
+                Assert.IsTrue(client.SampleRate == 44100 || client.SampleRate == 48000);
+                client.Stop();
+            }
+        }
 
-		[Test]
-		public virtual void BufferSize ()
-		{
-			using (Processor client = new Processor ("testing")) {
-				client.Start ();
-				Assert.IsTrue (client.BufferSize > 0);
-				client.Stop ();
-			}
-		}
+        [Test]
+        public virtual void BufferSize() {
+            using (Processor client = new("testing")) {
+                client.Start();
+                Assert.IsTrue(client.BufferSize > 0);
+                client.Stop();
+            }
+        }
 
-		[Test]
-		public virtual void AutoConnect ()
-		{
-			using (Controller controller = new Controller ("testController"))
-			using (Processor client = new Processor ("testClient", 2, 2, 0, 0, true)) {
-				ControllerReceiver receiver = new ControllerReceiver ();
-				controller.ConnectionChanged += receiver.ConnectionChanged;
-				controller.Start ();
-				Thread.Sleep (100);
-				int connectionsWithoutClient = receiver.ConnectionsFound;
-				client.Start ();
-				Thread.Sleep (100);
-				Assert.AreNotEqual (connectionsWithoutClient, receiver.ConnectionsFound);
-				client.Stop ();
-				controller.Stop ();
-			}
-		}
+        [Test]
+        public virtual void AutoConnect() {
+            using (Controller controller = new("testController"))
+            using (Processor client = new("testClient", 2, 2, 0, 0, true)) {
+                ControllerReceiver receiver = new();
+                controller.ConnectionChanged += receiver.ConnectionChanged;
+                controller.Start();
+                Thread.Sleep(100);
+                int connectionsWithoutClient = receiver.ConnectionsFound;
+                client.Start();
+                Thread.Sleep(100);
+                Assert.AreNotEqual(connectionsWithoutClient, receiver.ConnectionsFound);
+                client.Stop();
+                controller.Stop();
+            }
+        }
 
-		[Test]
-		public virtual void DefaultNameFormat ()
-		{
-			using (Controller controller = new Controller ("testController"))
-			using (Processor client = new Processor ("testClient", 1)) {
-				client.Start ();
-				Thread.Sleep (100);
-				Assert.AreEqual ("audioin_1", client.AudioInPorts.First ().Name);
-				client.Stop ();
-				controller.Stop ();
-			}
-		}
+        [Test]
+        public virtual void DefaultNameFormat() {
+            using (Controller controller = new("testController"))
+            using (Processor client = new("testClient", 1)) {
+                client.Start();
+                Thread.Sleep(100);
+                Assert.AreEqual("audioin_1", client.AudioInPorts.First().Name);
+                client.Stop();
+                controller.Stop();
+            }
+        }
 
-		[Test]
-		public virtual void ChangeNameFormat ()
-		{
-			using (Controller controller = new Controller ("testController"))
-			using (Processor client = new Processor ("testClient", 1)) {
-				client.PortNameFormat = "my_{direction}-{type}_{index}";
-				client.Start ();
-				Thread.Sleep (100);
-				Assert.AreEqual ("my_in-audio_1", client.AudioInPorts.First ().Name);
-				client.Stop ();
-				controller.Stop ();
-			}
-		}
-	}
+        [Test]
+        public virtual void ChangeNameFormat() {
+            using (Controller controller = new("testController"))
+            using (Processor client = new("testClient", 1)) {
+                client.PortNameFormat = "my_{direction}-{type}_{index}";
+                client.Start();
+                Thread.Sleep(100);
+                Assert.AreEqual("my_in-audio_1", client.AudioInPorts.First().Name);
+                client.Stop();
+                controller.Stop();
+            }
+        }
+    }
 }

@@ -1,0 +1,21 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AudioTranscription.App"
+             RequestedThemeVariant="Default"
+             xmlns:vm="clr-namespace:AudioTranscription.MVVM.ViewModels"
+             xmlns:local="using:AudioTranscription.MVVM">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+  
+    <Application.Resources>
+        <vm:MainWindowViewModel x:Key="MainViewModel"/>
+    </Application.Resources>
+
+</Application>

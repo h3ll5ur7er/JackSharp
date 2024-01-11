@@ -23,26 +23,23 @@
 using System;
 using JackSharp.Ports;
 
-namespace JackSharp.Events
-{
-	/// <summary>
-	/// Port rename event arguments.
-	/// </summary>
-	public sealed class PortRenameEventArgs : EventArgs
-	{
-		/// <summary>
-		/// Gets the port.
-		/// </summary>
-		/// <value>The port.</value>
-		public PortReference Port { get; private set; }
+namespace JackSharp.Events {
+    /// <summary>
+    /// Port rename event arguments.
+    /// </summary>
+    public sealed class PortRenameEventArgs : EventArgs {
+        /// <summary>
+        /// Gets the port.
+        /// </summary>
+        /// <value>The port.</value>
+        public PortReference Port { get; private set; }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="JackSharp.Events.PortRenameEventArgs"/> class.
-		/// </summary>
-		/// <param name="port">Port.</param>
-		public PortRenameEventArgs (PortReference port)
-		{
-			Port = port;
-		}
-	}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JackSharp.Events.PortRenameEventArgs"/> class.
+        /// </summary>
+        /// <param name="port">Port.</param>
+        public PortRenameEventArgs(PortReference port) {
+            Port = port;
+        }
+    }
 }

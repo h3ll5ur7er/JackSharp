@@ -20,23 +20,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace JackSharp.ApiWrapper
-{
-	enum JackLatencyCallbackMode
-	{
+namespace JackSharp.ApiWrapper {
+    enum JackLatencyCallbackMode {
 
-		/// <summary>
-		/// Latency Callback for Capture Latency.
-		/// Input Ports have their latency value setup.
-		/// In the Callback the client needs to set the latency of the output ports
-		/// </summary>
-		JackCaptureLatency,
+        /// <summary>
+        /// Latency Callback for Capture Latency.
+        /// Input Ports have their latency value setup.
+        /// In the Callback the client needs to set the latency of the output ports
+        /// </summary>
+        JackCaptureLatency,
 
-		/// <summary>
-		/// Latency Callback for Playback Latency.
-		/// Output Ports have their latency value setup.
-		/// In the Callback the client needs to set the latency of the input ports
-		/// </summary>
-		JackPlaybackLatency
-	}
+        /// <summary>
+        /// Latency Callback for Playback Latency.
+        /// Output Ports have their latency value setup.
+        /// In the Callback the client needs to set the latency of the input ports
+        /// </summary>
+        JackPlaybackLatency
+    }
 }

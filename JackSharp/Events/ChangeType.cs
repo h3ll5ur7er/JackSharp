@@ -20,24 +20,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace JackSharp.Events
-{
-	/// <summary>
-	/// Change type.
-	/// </summary>
-	public enum ChangeType
-	{
-		/// <summary>
-		/// Item is new.
-		/// </summary>
-		New,
-		/// <summary>
-		/// Item has been deleted.
-		/// </summary>
-		Deleted,
-		/// <summary>
-		/// Item has been renamed.
-		/// </summary>
-		Renamed
-	}
+namespace JackSharp.Events {
+    /// <summary>
+    /// Change type.
+    /// </summary>
+    public enum ChangeType {
+        /// <summary>
+        /// Item is new.
+        /// </summary>
+        New,
+        /// <summary>
+        /// Item has been deleted.
+        /// </summary>
+        Deleted,
+        /// <summary>
+        /// Item has been renamed.
+        /// </summary>
+        Renamed
+    }
 }

@@ -23,78 +23,69 @@
 using System;
 using JackSharp.Processing;
 
-namespace JackSharpTest.Dummies
-{
-	public class ClientReceiver
-	{
-		public int Called { get; private set; }
+namespace JackSharpTest.Dummies {
+    public class ClientReceiver {
+        public int Called { get; private set; }
 
-		public Action<ProcessBuffer> CopyInToOutAction;
-		public Action<ProcessBuffer> PlayMidiNoteAction;
-		public Action<ProcessBuffer> SequenceMidiAction;
-		public Action<ProcessBuffer> ChannelCounterAction;
-		public Action<ProcessBuffer> CallBackOneAction;
-		public Action<ProcessBuffer> CallBackTwoAction;
+        public Action<ProcessBuffer> CopyInToOutAction;
+        public Action<ProcessBuffer> PlayMidiNoteAction;
+        public Action<ProcessBuffer> SequenceMidiAction;
+        public Action<ProcessBuffer> ChannelCounterAction;
+        public Action<ProcessBuffer> CallBackOneAction;
+        public Action<ProcessBuffer> CallBackTwoAction;
 
-		public ClientReceiver ()
-		{
-			CopyInToOutAction = CopyInToOut;
-			PlayMidiNoteAction = PlayMidiNote;
-			ChannelCounterAction = ChannelCounter;
-			CallBackOneAction = CallBackOne;
-			CallBackTwoAction = CallBackTwo;
-			SequenceMidiAction = SequenceMidi;
-		}
+        public ClientReceiver() {
+            CopyInToOutAction = CopyInToOut;
+            PlayMidiNoteAction = PlayMidiNote;
+            ChannelCounterAction = ChannelCounter;
+            CallBackOneAction = CallBackOne;
+            CallBackTwoAction = CallBackTwo;
+            SequenceMidiAction = SequenceMidi;
+        }
 
-		void CopyInToOut (ProcessBuffer processItems)
-		{
-			for (int i = 0; i < Math.Min (processItems.AudioIn.Length, processItems.AudioOut.Length); i++) {
-				Array.Copy (processItems.AudioIn [i].Audio, processItems.AudioOut [i].Audio, processItems.AudioIn [i].BufferSize);
-			}
-			Called++;
-		}
+        void CopyInToOut(ProcessBuffer processItems) {
+            for (int i = 0; i < Math.Min(processItems.AudioIn.Length, processItems.AudioOut.Length); i++) {
+                Array.Copy(processItems.AudioIn[i].Audio, processItems.AudioOut[i].Audio, processItems.AudioIn[i].BufferSize);
+            }
+            Called++;
+        }
 
-		void PlayMidiNote (ProcessBuffer processItems)
-		{
-			foreach (MidiEventCollection<MidiInEvent> eventCollection in processItems.MidiIn) {
-				Called++;
-			}
-		}
+        void PlayMidiNote(ProcessBuffer processItems) {
+            foreach (MidiEventCollection<MidiInEvent> eventCollection in processItems.MidiIn) {
+                Called++;
+            }
+        }
 
-		void ChannelCounter (ProcessBuffer processItems)
-		{
-			Called = processItems.AudioIn.Length;
-		}
+        void ChannelCounter(ProcessBuffer processItems) {
+            Called = processItems.AudioIn.Length;
+        }
 
-		void CallBackOne (ProcessBuffer processItems)
-		{
-			Called |= 1;
-		}
+        void CallBackOne(ProcessBuffer processItems) {
+            Called |= 1;
+        }
 
-		void CallBackTwo (ProcessBuffer processItems)
-		{
-			Called |= 2;
-		}
+        void CallBackTwo(ProcessBuffer processItems) {
+            Called |= 2;
+        }
 
-		public void SequenceMidi (ProcessBuffer processItems)
-		{
-			foreach (MidiEventCollection<MidiOutEvent> eventCollection in processItems.MidiOut) {
-				var noteOn = new MidiOutEvent (processItems.Frames / 4,
-					                         new byte[] {
-						0x90 /* note on */,
-						30 /* note */,
-						64 /* velocity */
+        public void SequenceMidi(ProcessBuffer processItems) {
+            foreach (MidiEventCollection<MidiOutEvent> eventCollection in processItems.MidiOut) {
+                var noteOn = new MidiOutEvent(processItems.Frames / 4,
+                                             new byte[] {
+                        0x90 /* note on */,
+                        30 /* note */,
+                        64 /* velocity */
 					});
-				var noteOff = new MidiOutEvent (processItems.Frames / 2,
-					                          new byte[] {
-						0x80 /* note off */,
-						30 /* note */,
-						64 /* velocity */
+                var noteOff = new MidiOutEvent(processItems.Frames / 2,
+                                              new byte[] {
+                        0x80 /* note off */,
+                        30 /* note */,
+                        64 /* velocity */
 					});
-				eventCollection.AddEvent (noteOn);
-				eventCollection.AddEvent (noteOff);
-				Called++;
-			}
-		}
-	}
+                eventCollection.AddEvent(noteOn);
+                eventCollection.AddEvent(noteOff);
+                Called++;
+            }
+        }
+    }
 }

@@ -20,23 +20,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace JackSharp.Processing
-{
-	/// <summary>
-	/// MIDI event.
-	/// </summary>
-	public interface IMidiEvent
-	{
-		/// <summary>
-		/// Gets the time.
-		/// </summary>
-		/// <value>The index of the MIDI event in the current processing frame.</value>
-		int Time { get; }
+namespace JackSharp.Processing {
+    /// <summary>
+    /// MIDI event.
+    /// </summary>
+    public interface IMidiEvent {
+        /// <summary>
+        /// Gets the time.
+        /// </summary>
+        /// <value>The index of the MIDI event in the current processing frame.</value>
+        int Time { get; }
 
-		/// <summary>
-		/// Gets the midi data. Please read the MIDI specifications for valid content.
-		/// </summary>
-		/// <value>The midi data.</value>
-		byte[] MidiData { get; }
-	}
+        /// <summary>
+        /// Gets the midi data. Please read the MIDI specifications for valid content.
+        /// </summary>
+        /// <value>The midi data.</value>
+        byte[] MidiData { get; }
+    }
 }

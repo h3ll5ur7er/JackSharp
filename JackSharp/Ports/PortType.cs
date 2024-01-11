@@ -21,21 +21,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace JackSharp.Ports
-{
-	/// <summary>
-	/// Port type.
-	/// </summary>
-	public enum PortType
-	{
-		/// <summary>
-		/// Audio.
-		/// </summary>
-		Audio,
-		/// <summary>
-		/// MIDI.
-		/// </summary>
-		Midi
-	}
-    
+namespace JackSharp.Ports {
+    /// <summary>
+    /// Port type.
+    /// </summary>
+    public enum PortType {
+        /// <summary>
+        /// Audio.
+        /// </summary>
+        Audio,
+        /// <summary>
+        /// MIDI.
+        /// </summary>
+        Midi
+    }
+
 }

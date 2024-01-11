@@ -25,64 +25,59 @@ using System.Linq;
 using JackSharp.Events;
 using JackSharp.Ports;
 
-namespace JackSharpTest.Dummies
-{
-	class ControllerReceiver
-	{
-		public int PortsFound { get; private set; }
+namespace JackSharpTest.Dummies {
+    class ControllerReceiver {
+        public int PortsFound { get; private set; }
 
-		public int PhysicalPortsFound { get; private set; }
+        public int PhysicalPortsFound { get; private set; }
 
-		public int ConnectionsFound { get; private set; }
+        public int ConnectionsFound { get; private set; }
 
-		List<PortReference> _ports = new List<PortReference> ();
+        List<PortReference> _ports = new();
 
 
-		public void PortChanged (object sender, PortRegistrationEventArgs e)
-		{
-			switch (e.ChangeType) {
-			case ChangeType.New:
-				_ports.Add (e.Port);
-				PortsFound++;
-				if (e.Port.IsPhysicalPort) {
-					PhysicalPortsFound++;
-				}
-				break;
-			case ChangeType.Deleted:
-				_ports.Remove (e.Port);
-				PortsFound--;
-				if (e.Port.IsPhysicalPort) {
-					PhysicalPortsFound--;
-				}
-				break;
-			}
-		}
+        public void PortChanged(object sender, PortRegistrationEventArgs e) {
+            switch (e.ChangeType) {
+                case ChangeType.New:
+                    _ports.Add(e.Port);
+                    PortsFound++;
+                    if (e.Port.IsPhysicalPort) {
+                        PhysicalPortsFound++;
+                    }
+                    break;
+                case ChangeType.Deleted:
+                    _ports.Remove(e.Port);
+                    PortsFound--;
+                    if (e.Port.IsPhysicalPort) {
+                        PhysicalPortsFound--;
+                    }
+                    break;
+            }
+        }
 
-		public PortReference FirstOutPort {
-			get { return _ports.FirstOrDefault (p => p.Direction == Direction.Out && p.PortType == PortType.Audio); }
-		}
+        public PortReference FirstOutPort {
+            get { return _ports.FirstOrDefault(p => p.Direction == Direction.Out && p.PortType == PortType.Audio); }
+        }
 
-		public PortReference FirstInPort {
-			get { return _ports.FirstOrDefault (p => p.Direction == Direction.In && p.PortType == PortType.Audio); }
-		}
+        public PortReference FirstInPort {
+            get { return _ports.FirstOrDefault(p => p.Direction == Direction.In && p.PortType == PortType.Audio); }
+        }
 
-		public void ConnectionChanged (object sender, ConnectionChangeEventArgs e)
-		{
-			switch (e.ChangeType) {
-			case ChangeType.New:
-				ConnectionsFound++;
-				break;
-			case ChangeType.Deleted:
-				ConnectionsFound--;
-				break;
-			}
-		}
+        public void ConnectionChanged(object sender, ConnectionChangeEventArgs e) {
+            switch (e.ChangeType) {
+                case ChangeType.New:
+                    ConnectionsFound++;
+                    break;
+                case ChangeType.Deleted:
+                    ConnectionsFound--;
+                    break;
+            }
+        }
 
-		public void IsConnectionEqual (object sender, ConnectionChangeEventArgs e)
-		{
-			if (e.ChangeType == ChangeType.New) {
-				ConnectionsFound = (e.Inlet == FirstInPort) ? 1 : 0;
-			}
-		}
-	}
+        public void IsConnectionEqual(object sender, ConnectionChangeEventArgs e) {
+            if (e.ChangeType == ChangeType.New) {
+                ConnectionsFound = (e.Inlet == FirstInPort) ? 1 : 0;
+            }
+        }
+    }
 }

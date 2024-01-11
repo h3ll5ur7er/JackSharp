@@ -23,46 +23,40 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace JackSharp.Pointers
-{
-	static class MarshallingHelper
-	{
-		public static string PtrToString (this IntPtr ptr)
-		{
-			return Marshal.PtrToStringAnsi (ptr);
-		}
+namespace JackSharp.Pointers {
+    static class MarshallingHelper {
+        public static string PtrToString(this IntPtr ptr) {
+            return Marshal.PtrToStringAnsi(ptr);
+        }
 
-		public static string[] PtrToStringArray (this IntPtr stringArray)
-		{
-			if (stringArray == IntPtr.Zero) {
-				return new string[] { };
-			}
+        public static string[] PtrToStringArray(this IntPtr stringArray) {
+            if (stringArray == IntPtr.Zero) {
+                return new string[] { };
+            }
 
-			ushort arrayCount = stringArray.CountStrings ();
-			return stringArray.PtrToStringArray (arrayCount);
-		}
+            ushort arrayCount = stringArray.CountStrings();
+            return stringArray.PtrToStringArray(arrayCount);
+        }
 
-		static ushort CountStrings (this IntPtr stringArray)
-		{
-			ushort count = 0;
-			while (Marshal.ReadIntPtr (stringArray, count * IntPtr.Size) != IntPtr.Zero) {
-				++count;
-			}
-			return count;
-		}
+        static ushort CountStrings(this IntPtr stringArray) {
+            ushort count = 0;
+            while (Marshal.ReadIntPtr(stringArray, count * IntPtr.Size) != IntPtr.Zero) {
+                ++count;
+            }
+            return count;
+        }
 
-		static string[] PtrToStringArray (this IntPtr stringArray, ushort count)
-		{
-			if (stringArray == IntPtr.Zero) {
-				return new string[count];
-			}
+        static string[] PtrToStringArray(this IntPtr stringArray, ushort count) {
+            if (stringArray == IntPtr.Zero) {
+                return new string[count];
+            }
 
-			string[] members = new string[count];
-			for (int i = 0; i < count; ++i) {
-				IntPtr s = Marshal.ReadIntPtr (stringArray, i * IntPtr.Size);
-				members [i] = PtrToString (s);
-			}
-			return members;
-		}
-	}
+            string[] members = new string[count];
+            for (int i = 0; i < count; ++i) {
+                IntPtr s = Marshal.ReadIntPtr(stringArray, i * IntPtr.Size);
+                members[i] = PtrToString(s);
+            }
+            return members;
+        }
+    }
 }
