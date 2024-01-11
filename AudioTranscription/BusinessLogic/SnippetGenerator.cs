@@ -8,10 +8,15 @@ using System.Linq;
 
 namespace AudioTranscription.BusinessLogic;
 
-public class SnippetReadyEventArgs(TimeSpan startTime, TimeSpan endTime, byte[] data) {
+public class SnippetReadyEventArgs(IEnumerable<Chunk> chunks, byte[] data) {
+    public Snippet Snippet => new(chunks);
+    public byte[] Data => data;
+}
+public class ChunkReadyEventArgs(TimeSpan startTime, TimeSpan endTime, byte[] data) {
     public Chunk Chunk => new(data, startTime, endTime);
 }
 
+public delegate void ChunkReadyEventHandler(object sender, ChunkReadyEventArgs e);
 public delegate void SnippetReadyEventHandler(object sender, SnippetReadyEventArgs e);
 
 
@@ -22,14 +27,14 @@ public class ChunkGenerator(int snippetLengthInMs, WaveFormat format) {
     private readonly MemoryStream _stream = new();
     private readonly int _maxSize = format.AverageBytesPerSecond * snippetLengthInMs / 1000;
 
-    public event SnippetReadyEventHandler? ChunkReady;
+    public event ChunkReadyEventHandler? ChunkReady;
 
     public void AddData(byte[] data) {
         _stream.Write(data);
         if (_stream.Length >= _maxSize) {
             ChunkReady?.Invoke(this, new(
                 startTime: TimeSpan.FromSeconds(_stream.Position / (double)format.AverageBytesPerSecond), //TODO: this is not accurate
-                endTime: TimeSpan.FromSeconds(_stream.Length / (double)format.AverageBytesPerSecond),     //TODO: this is not accurate
+                endTime: TimeSpan.FromSeconds((_stream.Position + _stream.Length) / (double)format.AverageBytesPerSecond),     //TODO: this is not accurate
                 data: _stream.ToArray()
             ));
             _stream.SetLength(0);
@@ -56,16 +61,15 @@ public class SnippetGenerator {
     }
 
     private void EmitNext() {
-        var size = Configuration.Instance.ChunkSizeSeconds * Configuration.Instance.SnippetChunkCount * Configuration.Instance.BytesPerSecond;
-        var snippet = new byte[size];
-        var bounds = _chunks.Take(5).Select((chunk, i) => { Buffer.BlockCopy(chunk.Data, 0, snippet, i*snippet.Length, snippet.Length); return (chunk.StartTime, chunk.EndTime); }).ToList();
+
+        var chunkSize = AudioTranscriptionJackConnector.Instance.BufferSize;
+        var snippetSize = AudioTranscriptionJackConnector.Instance.BufferSize * Configuration.Instance.SnippetChunkCount;
+        var bufferSize = snippetSize * sizeof(float);
+        var buffer = new byte[bufferSize];
+        var chunks = _chunks.Take(5).ToList();
+        var bounds = chunks.Select((chunk, i) => { Buffer.BlockCopy(chunk.Data, 0, buffer, i*chunkSize, chunkSize); return (chunk.StartTime, chunk.EndTime); }).ToList();
         _chunks.Dequeue();
 
-      
-        SnippetReady?.Invoke(this, new(
-            startTime: bounds[0].StartTime,
-            endTime: bounds[^1].EndTime,
-            data: snippet
-        ));
+        SnippetReady?.Invoke(this, new(chunks, buffer));
     }
 }

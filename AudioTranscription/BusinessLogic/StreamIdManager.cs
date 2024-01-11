@@ -1,5 +1,3 @@
-
-
 using System;
 using System.Collections.Generic;
 
@@ -29,23 +27,3 @@ public class StreamIdManager {
 }
 
 public class AudioInputStream { }
-public class Snippet {
-    public Guid Id { get; } = Guid.NewGuid();
-    public List<Chunk> Chunks { get; } = new();
-    public TimeSpan StartTime => Chunks[0].StartTime;
-    public TimeSpan EndTime => Chunks[^1].EndTime;
-    public Snippet(IEnumerable<Chunk> chunks) {
-        Chunks.AddRange(chunks);
-    }
-}
-public class Chunk {
-    public Guid Id { get; } = Guid.NewGuid();
-    public byte[] Data { get; }
-    public TimeSpan StartTime { get; }
-    public TimeSpan EndTime { get; }
-    public Chunk(byte[] data, TimeSpan startTime, TimeSpan endTime) {
-        Data = data;
-        StartTime = startTime;
-        EndTime = endTime;
-    }
-}

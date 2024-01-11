@@ -23,14 +23,14 @@ public class Api: ApiBase {
         var query = new QueryParameters { { "id", snippet.SnippetId }, { "language", "auto" } };
         return await PostSnipppet("/transcribe", snippet.Data, "snippet.wav", query);
     }
-    protected async Task<TResponse?> PostBatch<TResponse>(string relativePath, IEnumerable<byte[]> data, string fileName, QueryParameters? query = null) {
+    protected async Task<TranscribeResponseDTO?> PostBatch(string relativePath, IEnumerable<byte[]> data, string fileName, QueryParameters? query = null) {
         using var stream = new MemoryStream();
         foreach (var entry in data) {
             stream.Write(entry);
         }
         stream.Position = 0;
 
-        return await PostStream<TResponse?>(relativePath, stream, fileName, query);
+        return await PostStream<TranscribeResponseDTO?>(relativePath, stream, fileName, query);
     }
     protected async Task<TranscribeResponseDTO?> PostSnipppet(string relativePath, byte[] data, string fileName, QueryParameters? query = null) {
         using var stream = new MemoryStream(data);
@@ -90,5 +90,6 @@ public class BatchDTO {
 public class SnippetDTO {
     public Guid SnippetId { get; set; }
     public byte[] Data { get; set; } = [];
+    // public List<Chunk> Chunks { get; set; }
 }
 

@@ -10,3 +10,5 @@ public class FileOutputViewModel : AudioDrainViewModelBase {
         set => this.RaiseAndSetIfChanged(ref filePath, value);
     }
 }
+public class NoOutputViewModel : AudioDrainViewModelBase {
+}

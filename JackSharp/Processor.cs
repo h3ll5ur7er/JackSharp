@@ -294,5 +294,11 @@ namespace JackSharp {
         public unsafe void ConnectPorts(List<string> outlets, List<string> inlets) {
             _ = outlets.Zip(inlets, (outlet, inlet) => PortApi.Connect(JackClient, outlet, inlet));
         }
+        public unsafe void ConnectPort(string outlet, string inlet) {
+            _ = PortApi.Connect(JackClient, outlet, inlet);
+        }
+        public unsafe void Disconnect(string sourcePort, string destionationPort) {
+            _ = PortApi.Disconnect(JackClient, sourcePort, destionationPort);
+        }
     }
 }

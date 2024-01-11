@@ -4,8 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AudioTranscription.MVVM.Views.FileInputView">
-  <TextBlock>
-    <Run Text="Audio File:" />
-    <Run Text="{Binding Path}" />
-  </TextBlock>
+  <StackPanel>
+    <TextBlock>
+      <Run Text="Audio File:" />
+      <Run Text="{Binding Path}" />
+    </TextBlock>
+    <Button Command="{Binding Load}" Content="Load"/>
+    <Button Command="{Binding Connect}" Content="Connect"/>
+  </StackPanel>
 </UserControl>

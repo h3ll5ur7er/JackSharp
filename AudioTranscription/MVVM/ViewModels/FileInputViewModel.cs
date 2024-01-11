@@ -9,4 +9,9 @@ public class FileInputViewModel : AudioSourceViewModelBase {
         get => filePath;
         set => this.RaiseAndSetIfChanged(ref filePath, value);
     }
+    public FileInputViewModel() {
+        Connect = ReactiveCommand.Create(()=>{
+            //TODO
+        });
+    }
 }

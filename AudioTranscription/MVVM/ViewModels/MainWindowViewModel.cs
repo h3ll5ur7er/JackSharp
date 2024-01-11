@@ -4,6 +4,8 @@ using ReactiveUI;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
+using AudioTranscription.BusinessLogic;
+using System.Collections.Generic;
 
 namespace AudioTranscription.MVVM.ViewModels;
 
@@ -42,10 +44,14 @@ public class MainWindowViewModel : ReactiveObject {
         AddFileInput = ReactiveCommand.Create<string>(path => AudioSources.Add(new FileInputViewModel { FilePath = path }));
 
         Trace.WriteLine("Initializing Jack");
-
-        var systemAudioPorts = Processor.SystemAudioPorts();
-        AudioSources = new AvaloniaList<AudioSourceViewModelBase>(systemAudioPorts.systemOutputs.Select(port => new MicInputViewModel { Port = port }));
-        AudioOutputs = new AvaloniaList<AudioDrainViewModelBase>(systemAudioPorts.systemInputs.Select(port => new SpeakerOutputViewModel { Port = port }));
+        (var systemInputs, var systemOutputs) = AudioTranscriptionJackConnector.Instance.SystemAudioPorts();
+        AudioSources = new AvaloniaList<AudioSourceViewModelBase>(systemOutputs.Select(port => new MicInputViewModel { Port = port })) {
+            new FileInputViewModel()
+        };
+        AudioOutputs = new AvaloniaList<AudioDrainViewModelBase>(systemInputs.Select(port => new SpeakerOutputViewModel { Port = port })) {
+            new FileOutputViewModel(),
+            new NoOutputViewModel()
+        };
         Trace.WriteLine("Jack Initialized");
     }
 

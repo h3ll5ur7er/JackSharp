@@ -15,6 +15,7 @@ class Program {
         => AppBuilder.Configure<App>()
             //.WithPlayground()
             .LoadConfig()
+            .InitializeJack()
             .UsePlatformDetect()
             .WithInterFont()
             .UseReactiveUI()
@@ -44,6 +45,12 @@ public static class AppBuilderExtensions {
         foreach (var port in aO) {
             Console.WriteLine($"AppOutput: {port}");
         }
+
+        return builder;
+    }
+    public static AppBuilder InitializeJack(this AppBuilder builder) {
+
+        AudioTranscriptionJackConnector.Instance.Initialize();
 
         return builder;
     }

@@ -4,8 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AudioTranscription.MVVM.Views.SpeakerOutputView">
-  <TextBlock>
-    <Run Text="Speaker" />
-    <Run Text="{Binding Port}" />
-  </TextBlock>
+  <StackPanel>
+    <TextBlock>
+      <Run Text="Speaker" />
+      <Run Text="{Binding Port}" />
+    </TextBlock>
+    <Button Command="{Binding Connect}" Content="Connect"/>
+  </StackPanel>
 </UserControl>
