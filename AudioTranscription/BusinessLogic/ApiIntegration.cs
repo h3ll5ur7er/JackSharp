@@ -59,10 +59,13 @@ public class TranscribeResponseDTO {
 public class ApiBase(string baseURL) {
     public string BaseURL => baseURL;
 
-    protected readonly HttpClient _www = new();
+    protected readonly HttpClient _www = new(){
+        Timeout = TimeSpan.FromSeconds(10),
+        BaseAddress = new Uri(baseURL),
+    };
 
     protected async Task<TResponse?> Post<TRequest, TResponse>(string relativePath, TRequest request, QueryParameters? query = null) {
-        var response = await _www.PostAsJsonAsync(BaseURL + relativePath + (query?.ToQueryString() ?? ""), request);
+        var response = await _www.PostAsJsonAsync(relativePath + (query?.ToQueryString() ?? ""), request);
         if (response.StatusCode != HttpStatusCode.OK) {
             throw new Exception($"Api call failed: ({response.StatusCode}) {response.ReasonPhrase}");
         }

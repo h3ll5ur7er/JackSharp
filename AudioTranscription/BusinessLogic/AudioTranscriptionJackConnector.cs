@@ -31,6 +31,7 @@ public class AudioTranscriptionJackConnector {
     private void AudioProcessing(ProcessBuffer buffer) {
         BufferSize = buffer.AudioIn[0].BufferSize;
         chunkGenerator.AddData(buffer.AudioIn[0].Audio.Take(buffer.AudioIn[0].BufferSize).SelectMany(f => BitConverter.GetBytes(f)).ToArray());
+        buffer.AudioOut[0].Audio = buffer.AudioIn[0].Audio;
     }
 
     public void Initialize() {

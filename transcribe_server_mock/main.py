@@ -4,6 +4,8 @@ api = fastapi.FastAPI()
 
 @api.post("/transcribe", )
 def transcribe(id: str, language: str = "auto", file: fastapi.UploadFile = fastapi.File(...)):
+    # with open("dump", "wb") as fp:
+    #     fp.write(file.read())
     return {"text": "demo string i am", "language": "yoda"}
 
 def main():

@@ -133,7 +133,7 @@ namespace Jack.NAudio {
             }
         }
 
-        void Dispose(bool isDisposing) {
+        public void Dispose(bool isDisposing) {
             _client.ProcessFunc -= ProcessAudio;
             Stop();
         }

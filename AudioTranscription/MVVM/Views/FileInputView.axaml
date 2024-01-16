@@ -11,5 +11,8 @@
     </TextBlock>
     <Button Command="{Binding Load}" Content="Load"/>
     <Button Command="{Binding Connect}" Content="Connect"/>
+    <Button Command="{Binding Play}" Content="Play"/>
+    <Button Command="{Binding Pause}" Content="Pause"/>
+    <Button Command="{Binding Stop}" Content="Stop"/>
   </StackPanel>
 </UserControl>
